@@ -20,8 +20,14 @@ export async function testAuthAvailable(request: APIRequestContext): Promise<boo
   return response.status() === 400;
 }
 
-export async function signIn(page: Page, name: string, displayName = `${name[0]!.toUpperCase()}${name.slice(1)} Tester`) {
-  const response = await page.request.post("/api/test-auth", { data: { email: testEmail(name), name: displayName } });
+export async function signIn(
+  page: Page,
+  name: string,
+  { displayName = `${name[0]!.toUpperCase()}${name.slice(1)} Tester`, acceptInvitations = false } = {},
+) {
+  const response = await page.request.post("/api/test-auth", {
+    data: { email: testEmail(name), name: displayName, acceptInvitations },
+  });
   expect(response.ok(), await response.text()).toBe(true);
 }
 

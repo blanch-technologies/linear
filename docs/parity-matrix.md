@@ -77,8 +77,8 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 | Feature | Tier | Notes | Status |
 |---|---|---|---|
 | Workspaces, switching, creation | P0 | One WorkOS org each (ADR 0004). Onboarding, `/<workspace>` routes, switcher, rename; e2e in `e2e/workspaces.spec.ts` | done |
-| Members and roles (owner, admin, member, guest) | P0 | WorkOS RBAC; last-owner rule, suspend, remove (ADR 0003/0004) | in progress |
-| Invitations (email, revoke) | P0 | WorkOS invitations; Resend later (blockers #7) | in progress |
+| Members and roles (owner, admin, member, guest) | P0 | WorkOS RBAC; last-owner rule, suspend, remove (ADR 0003/0004); Members settings page; e2e in `e2e/members.spec.ts` | done |
+| Invitations (email, revoke) | P0 | WorkOS invitations: invite (bulk), copy link, resend, revoke; Resend email later (blockers #7) | done |
 | Teams: hierarchy, public/restricted/private visibility, membership | P0 | Rules in docs/reference/nonlinear-functionality-audit.md; ADR 0003 and the D-20 matrix | in progress |
 | Workflow states per team (categories, order, default) | P0 | D-27 defaults, one default, one per required category | in progress |
 | Labels (workspace and team, groups) | P0 | | todo |

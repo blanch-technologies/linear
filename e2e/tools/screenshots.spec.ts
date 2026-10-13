@@ -10,7 +10,7 @@ const out = process.env.SCREENSHOT_DIR ?? "test-results/screenshots";
 
 test("capture", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await signIn(page, "shots", "Sam Shots");
+  await signIn(page, "shots", { displayName: "Sam Shots" });
   await page.goto("/onboarding");
   await page.getByLabel("Workspace name").fill("Acme Labs");
   await page.screenshot({ path: `${out}/onboarding.png` });
