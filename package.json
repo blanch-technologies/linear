@@ -1,0 +1,58 @@
+{
+  "name": "blanch",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -k -n next,convex -c magenta,cyan \"next dev\" \"convex dev\"",
+    "build": "next build",
+    "start": "next start",
+    "setup": "tsx scripts/setup.ts",
+    "seed": "tsx scripts/seed.ts",
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit && tsc --noEmit -p convex",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e": "playwright test"
+  },
+  "dependencies": {
+    "@sentry/nextjs": "11.7.0",
+    "@workos-inc/authkit-nextjs": "4.4.0",
+    "@workos-inc/node": "10.14.0",
+    "class-variance-authority": "0.7.1",
+    "cn": "0.4.0",
+    "convex": "1.46.0",
+    "lucide-react": "1.55.0",
+    "next": "16.4.0",
+    "next-themes": "0.4.6",
+    "radix-ui": "1.8.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "0.0.1",
+    "sonner": "2.0.8",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@edge-runtime/vm": "5.0.0",
+    "@playwright/test": "1.64.0",
+    "@tailwindcss/turbopack": "4.3.3",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "concurrently": "10.0.6",
+    "convex-test": "0.0.61",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.0",
+    "shadcn": "4.21.4",
+    "tailwindcss": "4.3.3",
+    "tsx": "4.23.15",
+    "tw-animate-css": "1.4.0",
+    "typescript": "5.9.3",
+    "vite": "8.3.4",
+    "vitest": "5.0.4"
+  },
+  "packageManager": "pnpm@12.11.2",
+  "engines": {
+    "node": ">=24 <25"
+  }
+}

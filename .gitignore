@@ -1,7 +1,29 @@
-node_modules
-.next
+# dependencies
+/node_modules
+.pnpm-debug.log*
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# testing
+/coverage
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# env files
 .env*
 !.env.example
+
+# platform
 .vercel
 .convex
+.sentryclirc
+
+# misc
 .DS_Store
+*.pem
