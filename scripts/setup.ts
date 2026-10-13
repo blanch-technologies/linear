@@ -12,6 +12,8 @@ import { EnvError, parseEnv, serverSchema } from "../src/lib/env/schema";
 
 const ENV_FILE = ".env.local";
 
+class SetupError extends Error {}
+
 function readEnvFile(): Record<string, string> {
   return parseDotenv(readFileSync(ENV_FILE, "utf8")) as Record<string, string>;
 }
@@ -42,7 +44,14 @@ async function main() {
     console.log(`Created ${ENV_FILE} from .env.example`);
   }
 
+  // Add any variables from .env.example that .env.local lacks (e.g. when
+  // `convex dev` created the file first), so every key has a line to fill in.
   let env = readEnvFile();
+  const example = parseDotenv(readFileSync(".env.example", "utf8")) as Record<string, string>;
+  for (const [key, value] of Object.entries(example)) {
+    if (!(key in env)) setEnvValue(key, value);
+  }
+  env = readEnvFile();
   if (!env.WORKOS_COOKIE_PASSWORD) {
     setEnvValue("WORKOS_COOKIE_PASSWORD", randomBytes(32).toString("base64url"));
     console.log("Generated WORKOS_COOKIE_PASSWORD");
@@ -51,7 +60,9 @@ async function main() {
   for (const key of ["WORKOS_CLIENT_ID", "WORKOS_API_KEY"] as const) {
     if (env[key]) continue;
     if (!process.stdin.isTTY) {
-      throw new Error(`${key} is missing from ${ENV_FILE}. Get it from dashboard.workos.com (staging).`);
+      throw new SetupError(
+        `${key} is missing from ${ENV_FILE}. Add it there (dashboard.workos.com > staging > API keys) and re-run.`,
+      );
     }
     setEnvValue(key, await prompt(`${key} (WorkOS dashboard > API keys, staging): `));
   }
@@ -75,6 +86,7 @@ async function main() {
 }
 
 main().catch((error: unknown) => {
-  console.error(error instanceof EnvError ? `\n${error.message}` : error);
+  const known = error instanceof EnvError || error instanceof SetupError;
+  console.error(known ? `\n${error.message}` : error);
   process.exit(1);
 });
