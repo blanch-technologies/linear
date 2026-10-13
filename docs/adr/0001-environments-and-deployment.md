@@ -15,12 +15,12 @@ environments, with `convex deploy` in the pipeline and Playwright run against pr
 - **Staging** is the Vercel project `blanch` with production branch `main`. Its Production
   environment holds a Convex **production** deploy key for the staging Convex project.
 - **Previews** use a Convex **preview** deploy key in the Vercel Preview environment, so each branch
-  gets its own Convex preview deployment. Until preview keys are available on the Convex plan,
-  previews point at the staging Convex dev deployment via `NEXT_PUBLIC_CONVEX_URL` and skip
-  `convex deploy` (see `docs/blockers.md`).
+  gets its own Convex preview deployment. Convex project-level default env vars give each
+  preview deployment `WORKOS_CLIENT_ID`.
 - **AuthKit on previews**: the callback is derived from `VERCEL_BRANCH_URL`
   (`src/lib/env/schema.ts#workosRedirectUri`), so one wildcard redirect URI in the WorkOS staging
-  environment (`https://*-<scope>.vercel.app/callback`) covers every branch.
+  environment (`https://blanch-git-*-<scope>.vercel.app/callback`) covers every branch. The
+  production callback defaults to `VERCEL_PROJECT_PRODUCTION_URL`, so no domain is hardcoded.
 - **Production** will be a second Vercel project (Git deploys disabled) and a separate Convex
   project, deployed by `.github/workflows/release.yml` on a `v*` tag. The workflow is inert until
   the `PRODUCTION_ENABLED` repository variable is `true`. Production is also the owner's workspace.

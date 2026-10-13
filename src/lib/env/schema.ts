@@ -33,6 +33,7 @@ export const serverSchema = z
     BLANCH_TEST_AUTH: z.enum(["0", "1"]).default("0"),
     VERCEL_ENV: vercelEnv,
     VERCEL_BRANCH_URL: z.string().optional(),
+    VERCEL_PROJECT_PRODUCTION_URL: z.string().optional(),
   })
   .extend(clientSchema.shape)
   .superRefine((env, ctx) => {
@@ -43,12 +44,11 @@ export const serverSchema = z
         message: "Test auth must never be enabled in production.",
       });
     }
-    const derivesRedirect = env.VERCEL_ENV === "preview" && env.VERCEL_BRANCH_URL;
-    if (!env.NEXT_PUBLIC_WORKOS_REDIRECT_URI && !derivesRedirect) {
+    if (!env.NEXT_PUBLIC_WORKOS_REDIRECT_URI && !vercelHost(env)) {
       ctx.addIssue({
         code: "custom",
         path: ["NEXT_PUBLIC_WORKOS_REDIRECT_URI"],
-        message: "Required outside Vercel preview deployments.",
+        message: "Required outside Vercel deployments.",
       });
     }
   });
@@ -83,10 +83,21 @@ export function parseEnv<S extends z.ZodType>(
   return result.data;
 }
 
-/** AuthKit callback URL; Vercel previews derive it from the stable branch URL. */
+type VercelVars = Pick<ServerEnv, "VERCEL_ENV" | "VERCEL_BRANCH_URL" | "VERCEL_PROJECT_PRODUCTION_URL">;
+
+/** Host Vercel serves this deployment under: the stable branch URL or the production domain. */
+function vercelHost(env: VercelVars): string | undefined {
+  if (env.VERCEL_ENV === "preview") return env.VERCEL_BRANCH_URL;
+  if (env.VERCEL_ENV === "production") return env.VERCEL_PROJECT_PRODUCTION_URL;
+  return undefined;
+}
+
+/**
+ * AuthKit callback URL. An explicit NEXT_PUBLIC_WORKOS_REDIRECT_URI wins
+ * locally and in production; previews always use their branch URL.
+ */
 export function workosRedirectUri(env: ServerEnv): string {
-  if (env.VERCEL_ENV === "preview" && env.VERCEL_BRANCH_URL) {
-    return `https://${env.VERCEL_BRANCH_URL}/callback`;
-  }
-  return env.NEXT_PUBLIC_WORKOS_REDIRECT_URI!;
+  const host = vercelHost(env);
+  if (env.VERCEL_ENV === "preview" && host) return `https://${host}/callback`;
+  return env.NEXT_PUBLIC_WORKOS_REDIRECT_URI ?? `https://${host}/callback`;
 }

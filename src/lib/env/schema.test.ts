@@ -46,3 +46,15 @@ describe("serverSchema", () => {
     ).toThrow(/NEXT_PUBLIC_WORKOS_REDIRECT_URI/);
   });
 });
+
+describe("production callback", () => {
+  it("derives from the project's production domain when unset", () => {
+    const env = parseEnv("server", serverSchema, {
+      ...valid,
+      NEXT_PUBLIC_WORKOS_REDIRECT_URI: undefined,
+      VERCEL_ENV: "production",
+      VERCEL_PROJECT_PRODUCTION_URL: "blanch.example.com",
+    });
+    expect(workosRedirectUri(env)).toBe("https://blanch.example.com/callback");
+  });
+});
