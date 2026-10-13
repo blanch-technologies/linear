@@ -16,12 +16,12 @@ export function EmptyState({ title, body }: { title: string; body: string }) {
 /** Shows that the WorkOS token reached Convex and was accepted. */
 function BackendStatus() {
   const { isAuthenticated, isLoading } = useConvexAuth();
-  const viewer = useQuery(api.viewer.get, isAuthenticated ? {} : "skip");
+  const mine = useQuery(api.workspaces.mine, isAuthenticated ? {} : "skip");
   const label =
-    isLoading || (isAuthenticated && viewer === undefined)
+    isLoading || (isAuthenticated && mine === undefined)
       ? "Connecting…"
-      : viewer
-        ? `Connected as ${viewer.email ?? viewer.subject}`
+      : mine
+        ? `Connected as ${mine.user?.email ?? "a signed-in user"}`
         : "Not connected to the backend";
   return (
     <p data-testid="backend-status" className="mt-4 text-xs text-muted-foreground">

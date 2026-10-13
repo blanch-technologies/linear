@@ -60,6 +60,15 @@ export function canManageTeam(actor: Actor | null, team: Team, graph: TeamGraph)
   return ancestors(graph, team).some((ancestor) => isTeamMember(actor, ancestor.id));
 }
 
+/**
+ * Sub-teams are created by people who will manage them: anyone who manages the
+ * parent, or a non-guest member of the parent (D-17).
+ */
+export function canCreateSubTeam(actor: Actor | null, parent: Team, graph: TeamGraph): boolean {
+  if (!sameTenant(actor, parent) || actor.role === "guest") return false;
+  return isTeamMember(actor, parent.id) || canManageTeam(actor, parent, graph);
+}
+
 /** D-17: only admins move a team to a new parent (or to the top level). */
 export function canReparentTeam(actor: Actor | null, team: Team): boolean {
   return sameTenant(actor, team) && isAdmin(actor.role);
