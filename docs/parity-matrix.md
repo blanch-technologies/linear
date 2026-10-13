@@ -85,7 +85,7 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 | Team settings: triage, cycles, estimates, templates, auto-archive | P1 | | todo |
 | Workspace settings: name, URL, logo, preferences | P1 | | todo |
 | Keyboard shortcuts overlay and customization | P1 | | todo |
-| Themes (light, dark, system) | P0 | | todo |
+| Themes (light, dark, system) | P0 | Tokens and user-menu toggle shipped in Phase 0 (ADR 0002); light values provisional pending Linear references | in progress |
 | Import/export (CSV, full backup) | P1 | | todo |
 | Linear importer | P2 (Phase 6) | | todo |
 
@@ -120,9 +120,9 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 
 | Area | Tier | Notes | Status |
 |---|---|---|---|
-| Design tokens: color ramps, type scale, spacing, radii, shadows, motion | P0 | Measured from reference | todo |
-| Dark and light themes | P0 | | todo |
-| Sidebar structure and behavior | P0 | | todo |
+| Design tokens: color ramps, type scale, spacing, radii, shadows, motion | P0 | Measured from reference. Colors, layout dimensions, modal shadow in `globals.css` (Phase 0); type scale and motion pending | in progress |
+| Dark and light themes | P0 | AA contrast enforced by `src/lib/theme/contrast.test.ts` | in progress |
+| Sidebar structure and behavior | P0 | D-37 structure, 246px rail, drawer under 850px (Phase 0 shell); teams and workspace switcher in Phase 1 | in progress |
 | Command menu (`Cmd+K`) with contextual actions | P0 | | todo |
 | Global keyboard model (go-to sequences, list actions) | P0 | | todo |
 | Row density, hover/selected/focus states, icons | P0 | Own icon set | todo |
