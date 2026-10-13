@@ -4,16 +4,13 @@ Open items that need the owner. Newest first.
 
 ## 2026-10-13 (Phase 0)
 
-1. **Convex team `charlesmeng18` is paused.** Creating the `blanch` project fails with
-   `InvalidProjectCreation: Project cannot be created or modified while your team is Paused`.
-   Needed for the staging deployment and for Vercel builds (`CONVEX_DEPLOY_KEY`). Local development
-   works without it by using Convex's account-free local backend.
-   *Owner action:* unpause the team (dashboard.convex.dev → team settings → billing/usage), or pick
-   another team.
-2. **GitHub org name `blanch` is taken** by an existing user account, so `github.com/blanch/linear`
-   is impossible. *Owner action:* create an org with another name (for example `blanch-hq` or
-   `blanchtools`) in the GitHub web UI, since `gh` can't create orgs, and tell me the name. I'll
-   then create the repo `<org>/linear` and open the Phase 0 PR.
+1. **GitHub org `blanch-technologies`** (owner chose it; `blanch` is a taken user name). It does
+   not exist yet. *Owner action:* create it in the GitHub web UI
+   (github.com/account/organizations/new, Free plan), since `gh` can't create orgs. Then I create
+   `blanch-technologies/linear` and open the Phase 0 PR.
+2. ~~Convex team `charlesmeng18` is paused.~~ Resolved: the owner chose the `juice` team for now.
+   Project `juice/blanch` exists, with dev deployment `cool-lobster-948`. Functions push once
+   `WORKOS_CLIENT_ID` is set on it (`pnpm setup` does this).
 3. **WorkOS staging credentials.** Needed for sign-in locally and on Vercel: `WORKOS_CLIENT_ID` and
    `WORKOS_API_KEY`. *Owner action:* put them in `.env.local` yourself or paste them into
    `pnpm setup`; don't send them in chat. Also add the redirect URIs listed in the README and a
