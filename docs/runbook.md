@@ -20,6 +20,7 @@ Stub created in Phase 0. Expand as environments come online. Topology: [ADR 0001
 | `WORKOS_COOKIE_PASSWORD` | random, 32+ chars | random, 32+ chars |
 | `NEXT_PUBLIC_WORKOS_REDIRECT_URI` | optional; defaults to `https://$VERCEL_PROJECT_PRODUCTION_URL/callback` | leave unset (derived from branch URL) |
 | `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` | Sentry | Sentry |
+| `BLANCH_TEST_AUTH` | never (the app refuses to boot) | `1`: e2e signs in `@blanch.test` users (D-41) |
 
 Convex deployment env: `WORKOS_CLIENT_ID` (token validation) and `WORKOS_API_KEY` (actions call
 WorkOS). Both are set on the staging prod deployment, on the dev deployment (`pnpm setup` does it),

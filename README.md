@@ -37,6 +37,13 @@ it imports `clientEnv` or `serverEnv` from `src/lib/env`.
 Convex has its own environment. `WORKOS_CLIENT_ID` must be set there too (`pnpm setup` does it), so
 Convex can verify AuthKit tokens (`convex/auth.config.ts`).
 
+### End-to-end tests
+
+Signed-in tests use a test-only sign-in (D-41). Set `BLANCH_TEST_AUTH=1` in `.env.local`; the app
+refuses to start with it in production. It signs in real WorkOS users, but only on the reserved
+`@blanch.test` domain, and never sends email. Each run creates its own users and workspaces and
+deletes them afterwards. Previews have it on, so CI runs the same suite against every PR.
+
 ## Scripts
 
 | Command | What it does |
@@ -48,6 +55,7 @@ Convex can verify AuthKit tokens (`convex/auth.config.ts`).
 | `pnpm lint` | ESLint |
 | `pnpm test` | Vitest: unit tests (`src/**/*.test.ts`) and Convex function tests (`convex/**/*.test.ts`) |
 | `pnpm e2e` | Playwright (starts `pnpm dev` unless `PLAYWRIGHT_BASE_URL` is set) |
+| `pnpm workos:bootstrap` | Creates WorkOS roles and audit-log schemas (idempotent; `pnpm setup` runs it) |
 | `pnpm build` | Production build |
 
 ## Layout

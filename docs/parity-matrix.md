@@ -76,7 +76,7 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 
 | Feature | Tier | Notes | Status |
 |---|---|---|---|
-| Workspaces, switching, creation | P0 | One WorkOS org each. Backend, sync, and tests in Phase 1 (ADR 0004) | in progress |
+| Workspaces, switching, creation | P0 | One WorkOS org each (ADR 0004). Onboarding, `/<workspace>` routes, switcher, rename; e2e in `e2e/workspaces.spec.ts` | done |
 | Members and roles (owner, admin, member, guest) | P0 | WorkOS RBAC; last-owner rule, suspend, remove (ADR 0003/0004) | in progress |
 | Invitations (email, revoke) | P0 | WorkOS invitations; Resend later (blockers #7) | in progress |
 | Teams: hierarchy, public/restricted/private visibility, membership | P0 | Rules in docs/reference/nonlinear-functionality-audit.md; ADR 0003 and the D-20 matrix | in progress |
@@ -122,7 +122,7 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 |---|---|---|---|
 | Design tokens: color ramps, type scale, spacing, radii, shadows, motion | P0 | Measured from reference. Colors, layout dimensions, modal shadow in `globals.css` (Phase 0); type scale and motion pending | in progress |
 | Dark and light themes | P0 | AA contrast enforced by `src/lib/theme/contrast.test.ts` | in progress |
-| Sidebar structure and behavior | P0 | D-37 structure, 246px rail, drawer under 850px (Phase 0 shell); teams and workspace switcher in Phase 1 | in progress |
+| Sidebar structure and behavior | P0 | D-37 structure, 246px rail, drawer under 850px; workspace menu, collapsible groups, nested team items with guide line (Phase 1) | in progress |
 | Command menu (`Cmd+K`) with contextual actions | P0 | | todo |
 | Global keyboard model (go-to sequences, list actions) | P0 | | todo |
 | Row density, hover/selected/focus states, icons | P0 | Own icon set | todo |

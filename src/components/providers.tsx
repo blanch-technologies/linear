@@ -10,6 +10,7 @@ import {
 import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
+import { SessionSync } from "@/components/workspace/session-sync";
 import { clientEnv } from "@/lib/env/client";
 
 const convex = new ConvexReactClient(clientEnv.NEXT_PUBLIC_CONVEX_URL);
@@ -46,10 +47,12 @@ export function Providers({ children }: { children: ReactNode }) {
     >
       <AuthKitProvider>
         <ConvexProviderWithAuth client={convex} useAuth={useConvexAuthFromAuthKit}>
-          <TooltipProvider delayDuration={400}>
-            {children}
-            <Toaster position="bottom-right" />
-          </TooltipProvider>
+          <SessionSync>
+            <TooltipProvider delayDuration={400}>
+              {children}
+              <Toaster position="bottom-right" />
+            </TooltipProvider>
+          </SessionSync>
         </ConvexProviderWithAuth>
       </AuthKitProvider>
     </ThemeProvider>
