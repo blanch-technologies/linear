@@ -1,0 +1,163 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design tokens (D-33 dark, D-34 light). Source: legacy/app/linear.css line 1.
+ * Product tokens (--bg, --surface*, --text, --muted, --faint, --brand, ...) are
+ * the source of truth; shadcn's semantic names are mapped onto them below so
+ * owned components in src/components/ui pick them up unchanged.
+ * Contrast is checked by src/lib/theme/contrast.test.ts.
+ */
+
+:root {
+  /* light */
+  --bg: #fcfcfd;
+  --sidebar-bg: #f4f4f6;
+  --surface: #ffffff;
+  --surface-2: #f1f1f4;
+  --surface-3: #e8e8ec;
+  --line: #e1e2e6;
+  --text: #1b1c20;
+  --text-muted: #61636c;
+  --text-faint: #9a9ca5;
+  --brand: #6553e0;
+  --brand-hover: #5544cc;
+  --brand-solid: #6553e0;
+  --brand-fg: #ffffff;
+  --green: #2f8a5c;
+  --yellow: #a8741c;
+  --red: #c4423f;
+  --blue: #2f73bd;
+  --status-started: #d98a3a;
+  --status-completed: #4f9c72;
+  --status-canceled: #8d8f99;
+  --shadow-modal: 0 22px 80px rgba(16, 17, 20, 0.18);
+}
+
+.dark {
+  --bg: #0f1012;
+  --sidebar-bg: #151619;
+  --surface: #191a1e;
+  --surface-2: #202126;
+  --surface-3: #28292f;
+  --line: #2a2b31;
+  --text: #e4e5e8;
+  --text-muted: #83858e;
+  --text-faint: #5d5f68;
+  --brand: #8e7cf8;
+  --brand-hover: #7465da;
+  /* Filled buttons use the pressed shade so white labels pass AA. */
+  --brand-solid: #7465da;
+  --brand-fg: #ffffff;
+  --green: #5cb788;
+  --yellow: #e4b560;
+  --red: #df726f;
+  --blue: #66a8e9;
+  --status-started: #ebaa69;
+  --status-completed: #83bd9d;
+  --status-canceled: #777985;
+  --shadow-modal: 0 22px 80px rgba(0, 0, 0, 0.55);
+}
+
+/* shadcn semantic names, mapped onto product tokens for both themes. */
+:root,
+.dark {
+  --radius: 0.375rem;
+  --background: var(--bg);
+  --foreground: var(--text);
+  --card: var(--surface);
+  --card-foreground: var(--text);
+  --popover: var(--surface);
+  --popover-foreground: var(--text);
+  --primary: var(--brand-solid);
+  --primary-foreground: var(--brand-fg);
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--text);
+  --muted: var(--surface-2);
+  --muted-foreground: var(--text-muted);
+  --accent: var(--surface-3);
+  --accent-foreground: var(--text);
+  --destructive: var(--red);
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--brand);
+  --sidebar: var(--sidebar-bg);
+  --sidebar-foreground: var(--text);
+  --sidebar-primary: var(--brand-solid);
+  --sidebar-primary-foreground: var(--brand-fg);
+  --sidebar-accent: var(--surface-3);
+  --sidebar-accent-foreground: var(--text);
+  --sidebar-border: var(--line);
+  --sidebar-ring: var(--brand);
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Mobile breakpoint (D-33): below `nav` the sidebar becomes a drawer. */
+  --breakpoint-nav: 850px;
+
+  --spacing-sidebar: 246px;
+  --spacing-rail: 260px;
+  --spacing-header: 47px;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-faint: var(--text-faint);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-green: var(--green);
+  --color-yellow: var(--yellow);
+  --color-red: var(--red);
+  --color-blue: var(--blue);
+  --color-status-started: var(--status-started);
+  --color-status-completed: var(--status-completed);
+  --color-status-canceled: var(--status-canceled);
+
+  --shadow-modal: var(--shadow-modal);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-size: 13px;
+  }
+}
