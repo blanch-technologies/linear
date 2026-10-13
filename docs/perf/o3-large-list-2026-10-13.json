@@ -1,0 +1,160 @@
+{
+  "machine": "Apple M2, macOS 27.0, Chromium (Playwright 1.64)",
+  "dataset": "10,000 issues, one team, demo seed",
+  "production": {
+    "at": "2026-10-13T23:55:42.751Z",
+    "results": [
+      {
+        "label": "desktop",
+        "cpuSlowdown": 1,
+        "loadMs": 1995,
+        "rows": 10000,
+        "heapMB": 78,
+        "filter": {
+          "n": 33,
+          "p50": 18,
+          "p95": 32,
+          "max": 32
+        },
+        "sort": {
+          "n": 24,
+          "p50": 30,
+          "p95": 48,
+          "max": 49
+        },
+        "group": {
+          "n": 24,
+          "p50": 30,
+          "p95": 39,
+          "max": 43
+        },
+        "scroll": {
+          "n": 40,
+          "p50": 14,
+          "p95": 17,
+          "max": 17
+        },
+        "optimistic": {
+          "n": 30,
+          "p50": 32,
+          "p95": 40,
+          "max": 40
+        }
+      },
+      {
+        "label": "4x CPU throttle",
+        "cpuSlowdown": 4,
+        "loadMs": 2464,
+        "rows": 10000,
+        "heapMB": 111,
+        "filter": {
+          "n": 33,
+          "p50": 24,
+          "p95": 50,
+          "max": 61
+        },
+        "sort": {
+          "n": 24,
+          "p50": 63,
+          "p95": 72,
+          "max": 85
+        },
+        "group": {
+          "n": 24,
+          "p50": 56,
+          "p95": 100,
+          "max": 159
+        },
+        "scroll": {
+          "n": 40,
+          "p50": 16,
+          "p95": 18,
+          "max": 37
+        },
+        "optimistic": {
+          "n": 30,
+          "p50": 41,
+          "p95": 45,
+          "max": 67
+        }
+      }
+    ]
+  },
+  "development": {
+    "at": "2026-10-13T23:54:03.441Z",
+    "results": [
+      {
+        "label": "desktop",
+        "cpuSlowdown": 1,
+        "loadMs": 2169,
+        "rows": 10000,
+        "filter": {
+          "n": 33,
+          "p50": 26,
+          "p95": 33,
+          "max": 34
+        },
+        "sort": {
+          "n": 24,
+          "p50": 32,
+          "p95": 55,
+          "max": 60
+        },
+        "group": {
+          "n": 24,
+          "p50": 29,
+          "p95": 67,
+          "max": 76
+        },
+        "scroll": {
+          "n": 40,
+          "p50": 17,
+          "p95": 28,
+          "max": 33
+        },
+        "optimistic": {
+          "n": 30,
+          "p50": 32,
+          "p95": 52,
+          "max": 56
+        }
+      },
+      {
+        "label": "4x CPU throttle",
+        "cpuSlowdown": 4,
+        "loadMs": 3342,
+        "rows": 10000,
+        "filter": {
+          "n": 33,
+          "p50": 43,
+          "p95": 112,
+          "max": 113
+        },
+        "sort": {
+          "n": 24,
+          "p50": 134,
+          "p95": 160,
+          "max": 169
+        },
+        "group": {
+          "n": 24,
+          "p50": 117,
+          "p95": 209,
+          "max": 214
+        },
+        "scroll": {
+          "n": 40,
+          "p50": 52,
+          "p95": 59,
+          "max": 59
+        },
+        "optimistic": {
+          "n": 30,
+          "p50": 103,
+          "p95": 117,
+          "max": 156
+        }
+      }
+    ]
+  }
+}

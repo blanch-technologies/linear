@@ -34,7 +34,7 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 
 | Feature | Tier | Notes | Status |
 |---|---|---|---|
-| List view with grouping, sub-grouping, ordering, display properties | P0 | Virtualized | todo |
+| List view with grouping, sub-grouping, ordering, display properties | P0 | Virtualized; O-3 spike (ADR 0005): subscriptions + TanStack Virtual meet D-36 at 10k issues | todo |
 | Board view with drag and drop between states | P0 | | todo |
 | Filters (AND/OR, all property types), quick filters | P0 | | todo |
 | Saved/custom views (personal and shared), favorites | P0 | | todo |
