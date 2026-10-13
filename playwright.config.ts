@@ -12,6 +12,8 @@ export default defineConfig({
   fullyParallel: true,
   globalTeardown: "./e2e/global-teardown.ts",
   timeout: 60_000,
+  // The local dev server compiles routes on first hit while tests run in parallel.
+  expect: { timeout: 10_000 },
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI ? [["github"], ["html", { open: "never" }]] : "list",

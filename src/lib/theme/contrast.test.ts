@@ -23,6 +23,9 @@ const textPairs: [fg: string, bg: string][] = [
   ["text-muted", "bg"],
   ["text-muted", "surface"],
   ["text-muted", "sidebar-bg"],
+  // Raised surfaces (keys, selected rows, chips) need the stronger secondary text.
+  ["text-muted-strong", "surface-2"],
+  ["text-muted-strong", "surface-3"],
   ["brand-fg", "brand-solid"],
   ["brand", "bg"],
 ];

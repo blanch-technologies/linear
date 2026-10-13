@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronRight, Plus, Search, SquarePen } from "lucide-react";
+import { ChevronRight, Command, Plus, Search, SquarePen } from "lucide-react";
+import { Kbd } from "@/components/ui/kbd";
+import { useCommandUI } from "@/components/shortcuts/global-shortcuts";
+import { ShortcutKeys } from "@/components/shortcuts/shortcut-keys";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useWorkspace, type TeamSummary } from "@/components/workspace/workspace-context";
@@ -144,6 +147,7 @@ function TeamItem({
 
 export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   const { href, teams, viewer, can } = useWorkspace();
+  const { openCommandMenu } = useCommandUI();
   const { roots, children } = teamTree(teams);
   const isGuest = viewer.role === "guest";
 
@@ -156,8 +160,27 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
             <Link href={href("search")} onClick={onNavigate}>
               <Search aria-hidden />
               Search
+              <Kbd className="ml-auto">/</Kbd>
             </Link>
           </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Open command menu"
+                onClick={() => {
+                  onNavigate?.();
+                  openCommandMenu();
+                }}
+              >
+                <Command aria-hidden />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              Command menu <ShortcutKeys id="command-menu" />
+            </TooltipContent>
+          </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="secondary" size="icon-sm" aria-label="New issue" disabled>
