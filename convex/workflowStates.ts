@@ -27,20 +27,24 @@ export const list = workspaceQuery({
     const canManage = canManageTeam(viewer.actor, team, viewer.graph);
     if (!canReadTeamContent(viewer.actor, team) && !canManage) fail("FORBIDDEN", "You don't have access to this team.");
     const states = await statesOf(db, doc._id);
-    const order = (s: Doc<"workflowStates">) => stateCategories.indexOf(s.category);
+    // One indexed read per state: enough to ask for a replacement before deleting.
+    const used = await Promise.all(
+      states.map(async (s) => !!(await db.query("issues").withIndex("by_state", (q) => q.eq("stateId", s._id)).first())),
+    );
     return {
       canManage,
       defaultStateId: doc.defaultStateId ?? null,
       states: states
-        .sort((a, b) => order(a) - order(b) || a.position - b.position)
-        .map((s) => ({
+        .map((s, index) => ({
           id: s._id,
           name: s.name,
           category: s.category,
           color: s.color,
           description: s.description ?? "",
           position: s.position,
-        })),
+          hasIssues: used[index]!,
+        }))
+        .sort((a, b) => stateCategories.indexOf(a.category) - stateCategories.indexOf(b.category) || a.position - b.position),
     };
   },
 });

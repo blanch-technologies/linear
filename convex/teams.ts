@@ -48,6 +48,7 @@ function summarize(viewer: Viewer, doc: Doc<"teams">) {
       leave: actor.teams.has(doc._id),
       reparent: canReparentTeam(actor, team),
       delete: canDeleteTeam(actor, team),
+      createSubTeam: canCreateSubTeam(actor, team, viewer.graph),
     },
   };
 }
