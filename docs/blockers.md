@@ -4,10 +4,9 @@ Open items that need the owner. Newest first.
 
 ## 2026-10-13 (Phase 0)
 
-0. **Vercel GitHub app is not installed on `blanch-technologies`**, so the Vercel project can't
-   connect to the repo, and PRs get no previews. *Owner action:* install it (github.com/apps/vercel
-   → Configure → blanch-technologies → the `linear` repo), then run `vercel git connect`.
-
+0. ~~Vercel can't connect a private org repo on Hobby.~~ Resolved 2026-10-13: the owner made
+   `blanch-technologies/linear` public, and Vercel is connected. Revisit (Vercel Pro and a
+   private repo) before design partners or any customer-specific code.
 1. ~~GitHub org.~~ Resolved: `blanch-technologies/linear`.
 2. ~~Convex team paused.~~ Resolved: project `juice/blanch`.
 3. ~~WorkOS staging credentials.~~ Resolved; local sign-in works. Still to do in the dashboard: the

@@ -28,7 +28,7 @@ project default for dev and preview deployments (`convex env default set ... --t
 
 | Thing | Value |
 |---|---|
-| GitHub | `blanch-technologies/linear` |
+| GitHub | `blanch-technologies/linear` (public: Vercel Hobby can't connect private org repos) |
 | Vercel project | `charlesmeng18s-projects/blanch` (Hobby) |
 | Convex project | `juice/blanch`; staging = prod deployment `next-toad-464`; dev = `cool-lobster-948` |
 | WorkOS | staging environment; redirects: `http://localhost:3000/callback`, `https://blanch-git-*-charlesmeng18s-projects.vercel.app/callback` |
