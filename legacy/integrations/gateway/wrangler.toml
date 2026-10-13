@@ -1,0 +1,6 @@
+name = "blanch-linear-integrations-gateway"
+main = "worker.ts"
+compatibility_date = "2026-10-12"
+
+[vars]
+SITE_URL = "https://linear-workspace-rebuild.sleekbat64.chatgpt.site"

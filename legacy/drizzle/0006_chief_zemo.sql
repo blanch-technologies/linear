@@ -1,0 +1,1 @@
+ALTER TABLE `integration_states` ADD `context_json` text DEFAULT '{}' NOT NULL;

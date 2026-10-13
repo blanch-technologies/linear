@@ -1,0 +1,1 @@
+ALTER TABLE `issue_events` ADD `details_json` text DEFAULT '{}' NOT NULL;

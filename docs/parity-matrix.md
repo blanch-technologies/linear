@@ -1,0 +1,132 @@
+# Parity matrix: our product versus Linear
+
+Draft tiering, to be confirmed by the owner. Written 2026-10-13 from general knowledge of Linear plus the prototype's audits; verify each row against the owner's real Linear workspace before building.
+
+Tiers: **P0** dogfood gate (needed to run real work), **P1** design-partner sellable, **P2** full parity, **P3** later or skip.
+Status values: `todo`, `in progress`, `done`, `verified` (owner confirmed against Linear).
+Every row needs, when picked up: acceptance criteria, owner agent, and keyboard and visual checklist items (see build plan section 7).
+
+## Issues
+
+| Feature | Tier | Notes / acceptance | Status |
+|---|---|---|---|
+| Create issue (composer, `C`, inline property pills, create-more) | P0 | Opens in under 100 ms; title + description + status/priority/assignee/labels/project/cycle | todo |
+| Routed issue page with stable URL, breadcrumbs, prev/next, copy ID/URL/branch | P0 | Sidebar stays visible | todo |
+| Properties: status, priority, assignee, labels, estimate, due date, project, cycle, milestone | P0 | Each editable from list, board, page, and keyboard | todo |
+| Sub-issues and parent | P0 | Hierarchy cycle prevention | todo |
+| Relations: blocks, blocked by, related, duplicate | P0 | | todo |
+| Rich-text description (headings, lists, code, links, images, mentions, slash menu) | P0 | TipTap | todo |
+| Comments: threads, edit, delete, reactions, resolve, mentions | P0 | | todo |
+| Attachments and file upload | P0 | 10 MB+ limit, authorized downloads | todo |
+| Issue history / activity timeline | P0 | Append-only events | todo |
+| Subscriptions and notifications on changes | P0 | | todo |
+| Soft delete, Recently deleted, restore, archive | P0 | 30-day purge | todo |
+| Bulk select and actions | P1 | | todo |
+| Issue templates | P1 | | todo |
+| Estimates (points / t-shirt / exponential) | P1 | Team setting | todo |
+| Priority/SLA rules | P2 | | todo |
+| Customer requests / needs linked to issues | P2 | | todo |
+| Issue links to GitHub PRs, branches | P1 | Phase 4 | todo |
+| Sub-issue progress, roll-ups | P1 | | todo |
+| Merge/duplicate handling | P1 | | todo |
+
+## Views
+
+| Feature | Tier | Notes | Status |
+|---|---|---|---|
+| List view with grouping, sub-grouping, ordering, display properties | P0 | Virtualized | todo |
+| Board view with drag and drop between states | P0 | | todo |
+| Filters (AND/OR, all property types), quick filters | P0 | | todo |
+| Saved/custom views (personal and shared), favorites | P0 | | todo |
+| Search page with tabs (All, Issues, Projects, Documents) | P0 | Convex full-text | todo |
+| Timeline / Gantt view | P2 | | todo |
+| Split / peek issue panel | P1 | | todo |
+| Spreadsheet-like view | P3 | | todo |
+
+## Personal surfaces
+
+| Feature | Tier | Notes | Status |
+|---|---|---|---|
+| My Issues (assigned, created, subscribed, activity) | P0 | Persisted subscriptions and events, not inferred | todo |
+| Inbox (read/unread, snooze, delete, filters, keyboard triage) | P0 | | todo |
+| Notification preferences (in-app, email, per type) | P1 | | todo |
+| Email notifications and digests | P1 | Resend | todo |
+| Desktop/mobile push | P3 | | todo |
+
+## Planning
+
+| Feature | Tier | Notes | Status |
+|---|---|---|---|
+| Cycles: recurring generation, current/upcoming, rollover, cycle page | P1 | Dates drive current cycle | todo |
+| Cycle analytics (scope, burn-up) | P2 | | todo |
+| Projects: lead, members, status, priority, target date, multi-team | P1 | Stable IDs, not names | todo |
+| Project milestones | P1 | | todo |
+| Project updates / health | P1 | | todo |
+| Project documents and resources | P1 | | todo |
+| Project dependencies | P2 | | todo |
+| Initiatives and sub-initiatives | P1 | | todo |
+| Roadmap view | P1 | | todo |
+| Triage queue (accept, decline, snooze, duplicate) | P1 | Opt-in per team | todo |
+| Asks (external intake from Slack/email) | P2 | Becomes a Triage issue | todo |
+| Documents (standalone docs) | P1 | | todo |
+| Insights / analytics | P2 | Needs warehouse or aggregates | todo |
+| Releases / release pipelines | P2 | | todo |
+
+## Workspace, teams, and settings
+
+| Feature | Tier | Notes | Status |
+|---|---|---|---|
+| Workspaces, switching, creation | P0 | One WorkOS org each | todo |
+| Members and roles (owner, admin, member, guest) | P0 | WorkOS RBAC | todo |
+| Invitations (email, revoke) | P0 | | todo |
+| Teams: hierarchy, public/restricted/private visibility, membership | P0 | Rules in docs/reference/nonlinear-functionality-audit.md | todo |
+| Workflow states per team (categories, order, default) | P0 | | todo |
+| Labels (workspace and team, groups) | P0 | | todo |
+| Team settings: triage, cycles, estimates, templates, auto-archive | P1 | | todo |
+| Workspace settings: name, URL, logo, preferences | P1 | | todo |
+| Keyboard shortcuts overlay and customization | P1 | | todo |
+| Themes (light, dark, system) | P0 | | todo |
+| Import/export (CSV, full backup) | P1 | | todo |
+| Linear importer | P2 (Phase 6) | | todo |
+
+## Integrations and API
+
+| Feature | Tier | Notes | Status |
+|---|---|---|---|
+| GitHub (PR/branch linking, status automation) | P1 | | todo |
+| Slack (unfurls, create issue, notifications) | P1 | | todo |
+| Public API keys and REST/GraphQL API | P1 | Scoped keys | todo |
+| Outbound webhooks | P1 | Signed, retried | todo |
+| MCP server | P1 | Tool list in docs/reference | todo |
+| GitLab, Sentry, Figma, Zendesk, Intercom, etc. | P3 | On customer demand | todo |
+| Linear-compatible API/webhooks | P2 (Phase 6) | Reduces switching cost | todo |
+
+## Enterprise
+
+| Feature | Tier | Notes | Status |
+|---|---|---|---|
+| SAML SSO | P1 | WorkOS | todo |
+| SCIM provisioning and group mapping | P1 | WorkOS Directory Sync | todo |
+| Audit log (view, export, streaming) | P1 | WorkOS Audit Logs | todo |
+| Domain verification, approved-domain join | P1 | WorkOS | todo |
+| IP allowlist | P1 | | todo |
+| Billing: seats, invoices, plan limits | P1 | Stripe | todo |
+| Data retention and purge controls | P1 | | todo |
+| SOC 2, DPA, pen test | P1 | Process work, start early | todo |
+| Dedicated (single-tenant) deployment | P2 | On demand | todo |
+| Admin approval for third-party apps | P3 | | todo |
+
+## Visual and interaction parity (applies to every row)
+
+| Area | Tier | Notes | Status |
+|---|---|---|---|
+| Design tokens: color ramps, type scale, spacing, radii, shadows, motion | P0 | Measured from reference | todo |
+| Dark and light themes | P0 | | todo |
+| Sidebar structure and behavior | P0 | | todo |
+| Command menu (`Cmd+K`) with contextual actions | P0 | | todo |
+| Global keyboard model (go-to sequences, list actions) | P0 | | todo |
+| Row density, hover/selected/focus states, icons | P0 | Own icon set | todo |
+| Empty, loading, error states | P0 | | todo |
+| Animations and transitions | P1 | | todo |
+| Responsive/mobile web | P2 | | todo |
+| Screenshot baselines per surface | P1 | | todo |
