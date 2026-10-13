@@ -3,6 +3,3 @@ allowBuilds:
   esbuild: true
   sharp: true
   unrs-resolver: true
-minimumReleaseAgeExclude:
-  - '@tanstack/react-virtual@3.14.19'
-  - '@tanstack/virtual-core@3.19.4'

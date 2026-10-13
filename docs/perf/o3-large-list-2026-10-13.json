@@ -156,5 +156,85 @@
         }
       }
     ]
-  }
+  },
+  "production_pinned": {
+    "at": "2026-10-13T23:59:27.358Z",
+    "results": [
+      {
+        "label": "desktop",
+        "cpuSlowdown": 1,
+        "loadMs": 2412,
+        "rows": 10000,
+        "heapMB": 45,
+        "filter": {
+          "n": 33,
+          "p50": 22,
+          "p95": 35,
+          "max": 40
+        },
+        "sort": {
+          "n": 24,
+          "p50": 30,
+          "p95": 48,
+          "max": 49
+        },
+        "group": {
+          "n": 24,
+          "p50": 30,
+          "p95": 39,
+          "max": 43
+        },
+        "scroll": {
+          "n": 40,
+          "p50": 16,
+          "p95": 17,
+          "max": 18
+        },
+        "optimistic": {
+          "n": 30,
+          "p50": 31,
+          "p95": 32,
+          "max": 39
+        }
+      },
+      {
+        "label": "4x CPU throttle",
+        "cpuSlowdown": 4,
+        "loadMs": 2491,
+        "rows": 10000,
+        "heapMB": 73,
+        "filter": {
+          "n": 33,
+          "p50": 23,
+          "p95": 49,
+          "max": 63
+        },
+        "sort": {
+          "n": 24,
+          "p50": 63,
+          "p95": 71,
+          "max": 95
+        },
+        "group": {
+          "n": 24,
+          "p50": 59,
+          "p95": 103,
+          "max": 111
+        },
+        "scroll": {
+          "n": 40,
+          "p50": 16,
+          "p95": 17,
+          "max": 18
+        },
+        "optimistic": {
+          "n": 30,
+          "p50": 43,
+          "p95": 60,
+          "max": 62
+        }
+      }
+    ]
+  },
+  "note": "production_pinned is the shipped @tanstack/react-virtual 3.14.13; production used 3.14.19."
 }

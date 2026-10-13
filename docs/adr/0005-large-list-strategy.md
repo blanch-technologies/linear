@@ -37,15 +37,21 @@ The test case is a team with 10,000 issues, where users filter, sort, group, and
 
 ## Results (production build, milliseconds, p50 / p95)
 
+Shipped dependency (`@tanstack/react-virtual` 3.14.13):
+
 | Operation | Desktop | 4× CPU throttle |
 |---|---|---|
-| Filter (per keystroke) | 18 / 32 | 24 / 50 |
-| Sort change | 30 / 48 | 63 / 72 |
-| Group change | 30 / 39 | 56 / **100** |
-| Scroll (frame after a jump) | 14 / 17 | 16 / 18 |
-| **Optimistic priority change** | 32 / **40** | 41 / **45** |
-| Load all 10,000 issues | 2.0 s | 2.5 s |
-| JS heap after the run | 78 MB | 111 MB |
+| Filter (per keystroke) | 22 / 35 | 23 / 49 |
+| Sort change | 30 / 48 | 63 / 71 |
+| Group change | 30 / 39 | 59 / **103** |
+| Scroll (frame after a jump) | 16 / 17 | 16 / 17 |
+| **Optimistic priority change** | 31 / **32** | 43 / **60** |
+| Load all 10,000 issues | 2.4 s | 2.5 s |
+| JS heap after the run | 45 MB | 73 MB |
+
+I ran it three times in all; the first two used 3.14.19, before it was replaced by an older pin
+because it was hours old. Grouping under 4× throttling measured a p95 of 97 to 103 ms. Everything
+else stayed well inside the bar.
 
 The development build (unminified React) is about 1.5 to 2× slower. At 4× throttling its p95 reaches
 117 ms optimistic and 209 ms group, so judge performance only on production builds.
@@ -53,8 +59,8 @@ The development build (unminified React) is about 1.5 to 2× slower. At 4× thro
 ## Decision
 
 - **No client-side normalized cache.** With plain Convex subscriptions, optimistic updates stay at
-  45 ms p95 even with 4× throttling, comfortably under the D-36 bar. Every list interaction is at or
-  under 100 ms p95.
+  60 ms p95 or less even with 4× throttling, under the D-36 bar. Every list interaction except
+  regrouping under 4× throttling is well under 100 ms p95, and regrouping sits at the bar.
 - The cost that does grow is **deriving the view**: re-sorting and regrouping 10,000 rows on each
   change. A normalized store wouldn't remove that. Phase 2's list should:
   1. Memoize filter, sort, and group as separate stages, so a group change doesn't re-sort.

@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@sentry/nextjs": "11.7.0",
-    "@tanstack/react-virtual": "3.14.19",
+    "@tanstack/react-virtual": "3.14.13",
     "@workos-inc/authkit-nextjs": "4.4.0",
     "@workos-inc/node": "10.14.0",
     "class-variance-authority": "0.7.1",
