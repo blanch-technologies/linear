@@ -11,6 +11,7 @@ import { switchWorkspaceUrl, workspaceHref, WorkspaceProvider, type MyWorkspaces
 import { ShellSkeleton } from "./shell-skeleton";
 import { GlobalShortcuts } from "@/components/shortcuts/global-shortcuts";
 import { ShortcutsProvider } from "@/components/shortcuts/shortcuts-provider";
+import { ComposerProvider } from "@/components/issues/composer";
 
 /**
  * Makes the session's organization match the workspace in the URL, then
@@ -67,7 +68,9 @@ function ActiveWorkspace({
       value={{ ...current, urlKey, teams, workspaces, href: (...segments) => workspaceHref(urlKey, ...segments) }}
     >
       <ShortcutsProvider>
-        <GlobalShortcuts>{children}</GlobalShortcuts>
+        <ComposerProvider>
+          <GlobalShortcuts>{children}</GlobalShortcuts>
+        </ComposerProvider>
       </ShortcutsProvider>
     </WorkspaceProvider>
   );

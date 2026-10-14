@@ -183,3 +183,13 @@ describe("team settings", () => {
     expect(audit.find((e) => e.action === "team.visibility_changed")?.metadata).toEqual({ from: "private", to: "restricted" });
   });
 });
+
+describe("assignable people", () => {
+  it("lists exactly the people who can read the team", async () => {
+    const eng = await addTeam(t, ws, "ENG", "public", [[member], [guest]]);
+    const sec = await addTeam(t, ws, "SEC", "private", [[admin]]);
+    const names = async (teamId: Id<"teams">) => (await ws.as(admin).query(api.teams.assignable, { teamId })).map((p) => p.email).sort();
+    expect(await names(eng)).toEqual([admin.email, guest.email, member.email, owner.email].sort());
+    expect(await names(sec)).toEqual([admin.email]);
+  });
+});

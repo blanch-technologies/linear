@@ -12,6 +12,7 @@ import {
   Plus,
   Search,
   Settings,
+  SquarePen,
   Sun,
   UserPlus,
   Users,
@@ -24,6 +25,7 @@ import { TeamMark } from "@/components/shell/team-mark";
 import { WorkspaceLogo } from "@/components/shell/workspace-logo";
 import { switchWorkspaceUrl, useWorkspace } from "@/components/workspace/workspace-context";
 import type { ShortcutId } from "@/lib/shortcuts";
+import { useComposer } from "@/components/issues/composer";
 import { ShortcutKeys } from "./shortcut-keys";
 
 type Page = "root" | "workspaces";
@@ -53,6 +55,7 @@ export function CommandMenu({
   const { setTheme } = useTheme();
   const { signOut } = useAuth();
   const { href, teams, can, viewer, workspace, workspaces } = useWorkspace();
+  const composer = useComposer();
   const [page, setPage] = useState<Page>("root");
   const [search, setSearch] = useState("");
 
@@ -118,6 +121,20 @@ export function CommandMenu({
               </CommandGroup>
             ) : (
               <>
+                <CommandGroup heading="Issues">
+                  <Entry
+                    value="Create new issue"
+                    keywords={["new", "issue", "add"]}
+                    icon={<SquarePen aria-hidden />}
+                    shortcut="create-issue"
+                    onSelect={() => {
+                      close();
+                      composer.open();
+                    }}
+                  >
+                    Create new issue
+                  </Entry>
+                </CommandGroup>
                 <CommandGroup heading="Navigation">
                   {[...personalNav, ...workspaceNav.filter((item) => !(isGuest && item.hiddenForGuests))].map((item) => (
                     <Entry
