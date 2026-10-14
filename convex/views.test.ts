@@ -89,3 +89,17 @@ describe("saved views", () => {
     expect(await errorCode(ws.as(ada).mutation(api.views.remove, { viewId: id }))).toBe("NOT_FOUND");
   });
 });
+
+describe("people directory (D-18)", () => {
+  it("shows guests only themselves and their teammates", async () => {
+    const zed = await addUser(t, "zed");
+    await t.run((ctx) =>
+      ctx.db.insert("memberships", { workspaceId: ws.workspaceId, userId: zed.userId, workosMembershipId: "om_zed", role: "member", status: "active", updatedAt: 0 }),
+    );
+    const emails = async (p: Person) => (await ws.as(p).query(api.members.directory, {})).map((u) => u.email).sort();
+    expect(await emails(bo)).toEqual([ada.email, bo.email, gus.email, zed.email].sort());
+    expect(await emails(gus)).toEqual([ada.email, bo.email, gus.email].sort());
+    const states = await ws.as(bo).query(api.workflowStates.forWorkspace, {});
+    expect(new Set(states.map((s) => s.teamId))).toEqual(new Set([eng]));
+  });
+});

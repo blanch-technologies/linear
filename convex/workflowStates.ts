@@ -214,3 +214,18 @@ export const reassignAndDelete = systemMutation({
     }
   },
 });
+
+/** States of every team whose issues the viewer can read: lookups for cross-team lists. */
+export const forWorkspace = workspaceQuery({
+  args: {},
+  handler: async ({ db, viewer }) => {
+    const out = [];
+    for (const doc of viewer.teams.values()) {
+      if (!canReadTeamContent(viewer.actor, toTeam(doc))) continue;
+      for (const s of await statesOf(db, doc._id)) {
+        out.push({ id: s._id, teamId: s.teamId, name: s.name, category: s.category, color: s.color, position: s.position });
+      }
+    }
+    return out;
+  },
+});

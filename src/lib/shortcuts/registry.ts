@@ -12,7 +12,7 @@ export type ShortcutDefinition = {
   id: string;
   keys: string;
   description: string;
-  group: "General" | "Navigation" | "Forms";
+  group: "General" | "Navigation" | "Lists" | "Forms";
   /** Where the shortcut is live. Global shortcuts apply everywhere. */
   scope: ShortcutScope;
   /** Fires even while typing in a field (for ⌘K, Esc, ⌘Enter). */

@@ -281,3 +281,33 @@ export const restoreRemoval = systemMutation({
     }
   },
 });
+
+/**
+ * People the viewer may see by name: everyone active for non-guests; for guests
+ * only themselves and members of their teams (D-18). Used to show assignees.
+ */
+export const directory = workspaceQuery({
+  args: {},
+  handler: async ({ db, viewer }) => {
+    const { actor, workspace } = viewer;
+    const memberships = await db
+      .query("memberships")
+      .withIndex("by_workspace_and_status_and_role", (q) => q.eq("workspaceId", workspace._id).eq("status", "active"))
+      .take(5000);
+    let allowed: Set<string> | null = null;
+    if (!canViewMemberDirectory(actor, workspace._id)) {
+      allowed = new Set([viewer.user._id as string]);
+      for (const teamId of actor.teams.keys()) {
+        const rows = await db.query("teamMembers").withIndex("by_team", (q) => q.eq("teamId", teamId as Id<"teams">)).take(1000);
+        for (const row of rows) allowed.add(row.userId);
+      }
+    }
+    const people = [];
+    for (const membership of memberships) {
+      if (allowed && !allowed.has(membership.userId)) continue;
+      const user = await db.get(membership.userId);
+      if (user) people.push(userSummary(user));
+    }
+    return people.sort((a, b) => a.name.localeCompare(b.name));
+  },
+});
