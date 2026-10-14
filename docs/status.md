@@ -7,27 +7,9 @@ update it in the same PR whenever the PR stack, external setup, or next steps ch
 
 - **Phase 0** (walking skeleton) and **Phase 1** (spine) are built. The owner asked to continue, so
   Phase 2 (core issues, the dogfood gate) is in progress.
-- **Nothing is merged into `main` yet.** Every PR is stacked on the one before it:
-
-  | PR | Branch | Contents |
-  |---|---|---|
-  | #1 | `agent/infra/scaffold` | Phase 0 scaffold, CI, deploy |
-  | #2 | `agent/identity/permissions` | Permission module, D-20 matrix |
-  | #3 | `agent/identity/spine` | Convex wrapper, WorkOS sync, teams, states, audit |
-  | #4 | `agent/web/workspaces` | Workspace routes, switching, test auth |
-  | #5 | `agent/web/members` | Members and invitations UI |
-  | #6 | `agent/web/teams` | Team settings, workflow states UI |
-  | #7 | `agent/web/shell` | Shortcut registry, ⌘K, help overlay |
-  | #8 | `agent/perf/spike` | Demo seed, O-3 spike (ADR 0005) |
-  | #9 | `agent/issues/model` | Issue model and the single write path |
-  | #10 | `agent/issues/views` | Filter AST, view sources, saved views |
-  | #11 | `agent/issues/composer` | Pickers, TipTap editor, optimistic updates, composer |
-  | #12 | `agent/issues/lists` | List and board views, team and My issues routes (draft) |
-
-- **Starting work:**
-  - If the stack has been merged, branch from `main`.
-  - If not, branch from the top of the stack (`agent/issues/lists`) and open your PR against it.
-  - If PRs were squash-merged, rebase the remaining branches onto `main` first.
+- **PRs #1–#11 are merged into `main`** (2026-10-14), and merged branches are deleted automatically.
+  - #12 (`agent/issues/lists`, list and board views) is an open draft against `main`.
+  - Branch new work from `main`, unless it builds on #12; then branch from `agent/issues/lists`.
   - Check with `gh pr list --state all`.
 
 ## Remaining Phase 2 work (handoff Part C), in suggested order

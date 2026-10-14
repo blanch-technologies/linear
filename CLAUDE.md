@@ -18,8 +18,8 @@ A multi-tenant, Linear-parity issue tracker on Next.js + Convex + WorkOS, deploy
 - Never put secrets in code, logs, or commits. Ask for credentials only when needed.
 
 ## Current phase
-Phase 2: core issues, the dogfood gate. Phase 1 is done, and the owner said to continue. PRs #1–#12
-are stacked and unmerged. See `docs/status.md` for where to branch from and the remaining work.
+Phase 2: core issues, the dogfood gate. Phase 1 is done. PRs #1–#11 are merged into `main`, and #12
+(list and board) is an open draft. See `docs/status.md` for the remaining work.
 
 ## Commands
 - `pnpm typecheck`, `pnpm lint`, and `pnpm test` need no secrets. Run all three before every push.
