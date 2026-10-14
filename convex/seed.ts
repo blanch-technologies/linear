@@ -1,10 +1,10 @@
-import { internalMutation } from "./_generated/server";
+import { systemMutation } from "./lib/functions";
 
 /**
- * Demo data for local and preview deployments. Idempotent. The schema has no
- * tables yet; Phase 1 fills this with multi-team, multi-role data (O-11).
+ * Demo data for local and preview deployments. Idempotent. Filled in by the
+ * seed PR (O-11) once WorkOS organizations can be created from scripts.
  */
-export const run = internalMutation({
+export const run = systemMutation({
   args: {},
   handler: async () => {
     return { inserted: 0 };

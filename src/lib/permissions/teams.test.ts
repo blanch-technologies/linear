@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   canAddTeamMember,
+  canCreateSubTeam,
   canDeleteTeam,
   canJoinTeam,
   canManageTeam,
@@ -46,6 +47,13 @@ describe("team management", () => {
     expect(canManageTeam(actor("member", [["eng", "member"]]), engWebUi, graph)).toBe(true);
     expect(canManageTeam(actor("member", [["sec", "member"]]), secOps, graph)).toBe(true);
     expect(canManageTeam(actor("guest", [["eng", "owner"]]), eng, graph)).toBe(false);
+  });
+
+  it("lets parent members and managers create sub-teams", () => {
+    expect(canCreateSubTeam(actor("member", [["sec", "member"]]), sec, graph)).toBe(true);
+    expect(canCreateSubTeam(actor("member"), sec, graph)).toBe(false);
+    expect(canCreateSubTeam(actor("admin"), sec, graph)).toBe(true);
+    expect(canCreateSubTeam(actor("guest", [["sec", "owner"]]), sec, graph)).toBe(false);
   });
 
   it("limits reparenting and deletion to admins", () => {

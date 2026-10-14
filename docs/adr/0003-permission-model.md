@@ -41,7 +41,7 @@ UI call the same functions.
 - The team's owners (team role `owner`).
 - Members of any ancestor team (D-17).
 
-Only admins reparent or delete a team.
+Parent members and managers create sub-teams. Only admins reparent or delete a team.
 
 **Joining:**
 - Non-guests can join public teams.

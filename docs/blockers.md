@@ -18,3 +18,12 @@ Open items that need the owner. Newest first.
    `BLANCH_TEST_AUTH=1` in production) is in place. The path itself, which mints a session Convex
    accepts, lands early in Phase 1 with the shell e2e, visual baseline, and axe checks. In Phase 0,
    the shell was checked manually with axe (0 violations in dark, light, and mobile).
+
+## 2026-10-13 (Phase 1)
+
+7. **Invitation email and redirect.** WorkOS sends the invitation emails, and the accept link uses
+   the staging environment's default redirect URI (now `http://localhost:3000/callback`).
+   - Owner action: in WorkOS → Redirects, make the staging Vercel URL the default once PR #1 is
+     merged.
+   - Resend-delivered invitations (D-11) need a Resend key and a sending domain. Ask when we start
+     notification email (Phase 2).

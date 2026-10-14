@@ -29,6 +29,12 @@ function convex(...args: string[]) {
   execFileSync("pnpm", ["exec", "convex", ...args], { stdio: "inherit" });
 }
 
+/** Sets a Convex env var from stdin so the value never appears in argv or logs. */
+function convexSecret(name: string, value: string) {
+  execFileSync("pnpm", ["exec", "convex", "env", "set", name], { input: value, stdio: ["pipe", "ignore", "inherit"] });
+  console.log(`Set ${name} on the Convex dev deployment`);
+}
+
 async function prompt(question: string): Promise<string> {
   const rl = createInterface({ input: process.stdin, output: process.stdout });
   try {
@@ -74,9 +80,14 @@ async function main() {
     env = readEnvFile();
   }
 
-  // Convex validates AuthKit tokens with this (convex/auth.config.ts).
+  // Convex validates AuthKit tokens with the client id (convex/auth.config.ts)
+  // and calls WorkOS from actions with the API key (convex/lib/workos.ts).
   convex("env", "set", "WORKOS_CLIENT_ID", env.WORKOS_CLIENT_ID);
+  convexSecret("WORKOS_API_KEY", env.WORKOS_API_KEY);
   convex("dev", "--once");
+
+  // Roles and audit-log schemas in the WorkOS environment. Idempotent.
+  execFileSync("pnpm", ["workos:bootstrap"], { stdio: "inherit" });
 
   parseEnv("server", serverSchema, readEnvFile());
   console.log(`\n${ENV_FILE} is valid.`);

@@ -76,11 +76,11 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 
 | Feature | Tier | Notes | Status |
 |---|---|---|---|
-| Workspaces, switching, creation | P0 | One WorkOS org each | todo |
-| Members and roles (owner, admin, member, guest) | P0 | WorkOS RBAC | todo |
-| Invitations (email, revoke) | P0 | | todo |
-| Teams: hierarchy, public/restricted/private visibility, membership | P0 | Rules in docs/reference/nonlinear-functionality-audit.md | todo |
-| Workflow states per team (categories, order, default) | P0 | | todo |
+| Workspaces, switching, creation | P0 | One WorkOS org each. Backend, sync, and tests in Phase 1 (ADR 0004) | in progress |
+| Members and roles (owner, admin, member, guest) | P0 | WorkOS RBAC; last-owner rule, suspend, remove (ADR 0003/0004) | in progress |
+| Invitations (email, revoke) | P0 | WorkOS invitations; Resend later (blockers #7) | in progress |
+| Teams: hierarchy, public/restricted/private visibility, membership | P0 | Rules in docs/reference/nonlinear-functionality-audit.md; ADR 0003 and the D-20 matrix | in progress |
+| Workflow states per team (categories, order, default) | P0 | D-27 defaults, one default, one per required category | in progress |
 | Labels (workspace and team, groups) | P0 | | todo |
 | Team settings: triage, cycles, estimates, templates, auto-archive | P1 | | todo |
 | Workspace settings: name, URL, logo, preferences | P1 | | todo |
