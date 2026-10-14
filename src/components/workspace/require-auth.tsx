@@ -18,8 +18,10 @@ export function RequireAuth({ children, fallback = <ShellSkeleton /> }: { childr
     return (
       <main className="grid min-h-dvh place-items-center p-6">
         <div className="max-w-sm space-y-3 text-center">
-          <h1 className="text-base font-semibold">Your session has ended</h1>
-          <p className="text-muted-foreground">Sign in again to continue.</p>
+          <h1 className="text-base font-semibold">You&apos;ve been signed out</h1>
+          <p className="text-muted-foreground">
+            Your session expired, or your access to this workspace changed. Sign in again to continue.
+          </p>
           <Button asChild size="sm">
             <Link href="/sign-in" prefetch={false}>
               Sign in

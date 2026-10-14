@@ -9,9 +9,11 @@ import { serverEnv } from "@/lib/env/server";
  * Convex accepts their tokens exactly as in production, but only on the
  * reserved `blanch.test` domain: it can never sign in as a real person.
  *
- * POST { "email": "owner@blanch.test", "name"?: "Olive Owner" }
+ * POST { "email": "owner@blanch.test", "name"?: "Olive Owner", "acceptInvitations"?: true }
  *   Creates the WorkOS user if needed, sets a fresh random password, signs in
- *   with it, and stores the session cookie. No email is sent.
+ *   with it, and stores the session cookie. No email is sent. With
+ *   `acceptInvitations`, first accepts the address's pending invitations, as
+ *   clicking the emailed link would.
  * DELETE { "prefix": "E2E abc", "emailPrefix": "e2e-abc" }
  *   Cleanup after a run: deletes WorkOS organizations whose name starts with
  *   `prefix` and that only test users belong to, then the test users whose
@@ -26,7 +28,7 @@ function disabled() {
 
 export async function POST(request: NextRequest) {
   if (disabled()) return new NextResponse(null, { status: 404 });
-  const body = (await request.json().catch(() => ({}))) as { email?: unknown; name?: unknown };
+  const body = (await request.json().catch(() => ({}))) as { email?: unknown; name?: unknown; acceptInvitations?: unknown };
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
   if (!testEmail.test(email)) {
     return NextResponse.json({ error: "Only @blanch.test addresses can use test auth." }, { status: 400 });
@@ -38,9 +40,15 @@ export async function POST(request: NextRequest) {
   const password = `${randomBytes(24).toString("base64url")}aA1!`;
   const existing = (await workos.userManagement.listUsers({ email })).data[0];
   if (existing) {
-    await workos.userManagement.updateUser({ userId: existing.id, password, firstName, lastName });
+    await workos.userManagement.updateUser({ userId: existing.id, password, firstName, lastName, emailVerified: true });
   } else {
     await workos.userManagement.createUser({ email, password, emailVerified: true, firstName, lastName });
+  }
+  if (body.acceptInvitations === true) {
+    const invitations = await (await workos.userManagement.listInvitations({ email, limit: 100 })).autoPagination();
+    for (const invitation of invitations) {
+      if (invitation.state === "pending") await workos.userManagement.acceptInvitation(invitation.id);
+    }
   }
   const auth = await workos.userManagement.authenticateWithPassword({
     clientId: serverEnv.WORKOS_CLIENT_ID,
