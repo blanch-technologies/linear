@@ -167,6 +167,7 @@ async function insertIssues(ctx: Pick<MutationCtx, "db">, teamDoc: Doc<"teams">,
   const states = await ctx.db.query("workflowStates").withIndex("by_team_and_position", (q) => q.eq("teamId", teamDoc._id)).take(50);
   // Weighted toward open work, as in a real team.
   const weights: Record<string, number> = { backlog: 4, unstarted: 3, started: 2, completed: 4, canceled: 1, triage: 0 };
+  const categories = new Map(states.map((state) => [state._id, state.category]));
   const pool = states.flatMap((state) => Array.from({ length: weights[state.category] ?? 1 }, () => state._id));
   const random = prng(teamDoc.issueCounter + teamDoc.key.length * 7919);
   const now = Date.now();
@@ -175,13 +176,16 @@ async function insertIssues(ctx: Pick<MutationCtx, "db">, teamDoc: Doc<"teams">,
     counter += 1;
     const updatedAt = now - Math.floor(random() * 90 * 24 * 3600 * 1000);
     const assigneeIndex = Math.floor(random() * (assignees.length + 1));
+    const stateId = pool[Math.floor(random() * pool.length)]!;
     await ctx.db.insert("issues", {
       workspaceId: teamDoc.workspaceId,
       teamId: teamDoc._id,
       number: counter,
       identifier: `${teamDoc.key}-${counter}`,
       title: `${verbs[Math.floor(random() * verbs.length)]} ${nouns[Math.floor(random() * nouns.length)]}`,
-      stateId: pool[Math.floor(random() * pool.length)]!,
+      stateId,
+      stateCategory: categories.get(stateId)!,
+      labelIds: [],
       priority: Math.floor(random() * 5),
       assigneeId: assignees[assigneeIndex],
       creatorId: teamDoc.createdBy,

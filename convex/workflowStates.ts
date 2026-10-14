@@ -196,9 +196,16 @@ export const reassignAndDelete = systemMutation({
   args: { stateId: v.id("workflowStates"), replacementStateId: v.id("workflowStates") },
   handler: async (ctx, { stateId, replacementStateId }) => {
     const issues = await ctx.db.query("issues").withIndex("by_state", (q) => q.eq("stateId", stateId)).take(reassignBatch);
+    const replacement = await ctx.db.get(replacementStateId);
+    if (!replacement) return;
     const now = Date.now();
     for (const issue of issues) {
-      await ctx.db.patch(issue._id, { stateId: replacementStateId, version: issue.version + 1, updatedAt: now });
+      await ctx.db.patch(issue._id, {
+        stateId: replacementStateId,
+        stateCategory: replacement.category,
+        version: issue.version + 1,
+        updatedAt: now,
+      });
     }
     if (issues.length === reassignBatch) {
       await ctx.scheduler.runAfter(0, internal.workflowStates.reassignAndDelete, { stateId, replacementStateId });
