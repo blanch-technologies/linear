@@ -27,6 +27,14 @@ accepted your WorkOS token.
 `pnpm setup` is safe to re-run. When `convex dev` asks, either log in to Convex for a cloud dev
 deployment or choose to run locally without an account.
 
+On first sign-in you create a workspace. `pnpm setup` also seeds a demo workspace, **Acme (demo)**
+at `/acme-demo`. It has people in every role (on the reserved `@blanch.test` domain, so nobody is
+emailed) and teams that cover public, private, and restricted visibility, plus sample issues.
+- **To join it as an owner:** sign in once, then run `pnpm seed --owner you@company.com`. You aren't
+  added to **Security**, which shows how private teams look to an owner who isn't a member.
+- **For the large-list benchmark:** `pnpm seed --perf` adds a team with 10,000 issues
+  ([ADR 0005](docs/adr/0005-large-list-strategy.md)).
+
 ### Environment
 
 All variables are listed in [`.env.example`](.env.example) and validated by
@@ -37,12 +45,17 @@ it imports `clientEnv` or `serverEnv` from `src/lib/env`.
 Convex has its own environment. `WORKOS_CLIENT_ID` must be set there too (`pnpm setup` does it), so
 Convex can verify AuthKit tokens (`convex/auth.config.ts`).
 
-### End-to-end tests
+### End-to-end and performance tests
 
 Signed-in tests use a test-only sign-in (D-41). Set `BLANCH_TEST_AUTH=1` in `.env.local`; the app
 refuses to start with it in production. It signs in real WorkOS users, but only on the reserved
 `@blanch.test` domain, and never sends email. Each run creates its own users and workspaces and
 deletes them afterwards. Previews have it on, so CI runs the same suite against every PR.
+
+To measure large-list performance, run `pnpm seed --perf`, then
+`PERF=1 PLAYWRIGHT_BASE_URL=http://localhost:3002 pnpm exec playwright test e2e/perf` against
+`pnpm build && pnpm exec next start -p 3002`. Development builds are about 2× slower, so measure
+production builds.
 
 ## Scripts
 
@@ -50,7 +63,7 @@ deletes them afterwards. Previews have it on, so CI runs the same suite against 
 |---|---|
 | `pnpm dev` | Next.js dev server and Convex dev watcher |
 | `pnpm setup` | One-time and repeatable local setup |
-| `pnpm seed` | Re-run the seed mutation against the current Convex deployment |
+| `pnpm seed [--owner email] [--perf]` | Demo workspace in the dev deployment (idempotent; dev deployments only) |
 | `pnpm typecheck` | Next route types, then `tsc` for the app and for `convex/` |
 | `pnpm lint` | ESLint |
 | `pnpm test` | Vitest: unit tests (`src/**/*.test.ts`) and Convex function tests (`convex/**/*.test.ts`) |

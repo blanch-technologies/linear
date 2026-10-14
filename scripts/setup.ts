@@ -92,8 +92,12 @@ async function main() {
   parseEnv("server", serverSchema, readEnvFile());
   console.log(`\n${ENV_FILE} is valid.`);
 
-  convex("run", "seed:run");
-  console.log("\nSetup complete. Run `pnpm dev` and open http://localhost:3000");
+  // Demo workspace with every role and team visibility (scripts/seed.ts).
+  execFileSync("pnpm", ["seed"], { stdio: "inherit" });
+  console.log(
+    "\nSetup complete. Run `pnpm dev` and open http://localhost:3000." +
+      "\nTo join the demo workspace as an owner, sign in once, then run `pnpm seed --owner <your email>`.",
+  );
 }
 
 main().catch((error: unknown) => {

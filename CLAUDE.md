@@ -16,4 +16,5 @@ A multi-tenant, Linear-parity issue tracker on Next.js + Convex + WorkOS, deploy
 - Never put secrets in code, logs, or commits. Ask for credentials only when needed.
 
 ## Current phase
-Phase 0: walking skeleton (see handoff Part C).
+Phase 1: spine (see handoff Part C), built as stacked PRs #2–#8 on top of Phase 0 (#1). Waiting
+for owner review before Phase 2.

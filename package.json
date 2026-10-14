@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "setup": "tsx scripts/setup.ts",
-    "seed": "tsx scripts/seed.ts",
+    "seed": "node --env-file-if-exists=.env.local --import tsx scripts/seed.ts",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit && tsc --noEmit -p convex",
     "test": "vitest run",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@sentry/nextjs": "11.7.0",
+    "@tanstack/react-virtual": "3.14.13",
     "@workos-inc/authkit-nextjs": "4.4.0",
     "@workos-inc/node": "10.14.0",
     "class-variance-authority": "0.7.1",

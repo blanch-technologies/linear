@@ -52,10 +52,11 @@ test.describe("workspaces", () => {
 
   test("admins rename the workspace and change its URL", async ({ page }) => {
     await signIn(page, "renamer");
-    const { urlKey } = await createWorkspace(page, "Rename");
+    const { name, urlKey } = await createWorkspace(page, "Rename");
     await page.goto(`/${urlKey}/settings/workspace`);
     const newKey = `${urlKey}-x`.slice(0, 32);
-    await page.getByLabel("Name").fill(`${urlKey} renamed`);
+    // Keep the run prefix so global teardown still finds and deletes it.
+    await page.getByLabel("Name").fill(`${name} renamed`);
     await page.getByLabel("URL").fill(newKey);
     await expect(page.getByText("Changing the URL breaks")).toBeVisible();
     await page.getByRole("button", { name: "Save" }).click();
