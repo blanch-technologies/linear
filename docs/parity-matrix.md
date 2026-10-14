@@ -36,8 +36,8 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 |---|---|---|---|
 | List view with grouping, sub-grouping, ordering, display properties | P0 | Virtualized; O-3 spike (ADR 0005): subscriptions + TanStack Virtual meet D-36 at 10k issues | todo |
 | Board view with drag and drop between states | P0 | | todo |
-| Filters (AND/OR, all property types), quick filters | P0 | | todo |
-| Saved/custom views (personal and shared), favorites | P0 | | todo |
+| Filters (AND/OR, all property types), quick filters | P0 | AST + evaluation + serialization (ADR 0008); UI with the list | in progress |
+| Saved/custom views (personal and shared), favorites | P0 | Saved views backend with scopes (ADR 0008); UI later | in progress |
 | Search page with tabs (All, Issues, Projects, Documents) | P0 | Convex full-text | todo |
 | Timeline / Gantt view | P2 | | todo |
 | Split / peek issue panel | P1 | | todo |

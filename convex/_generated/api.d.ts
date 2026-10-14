@@ -28,6 +28,7 @@ import type * as migrations from "../migrations.js";
 import type * as seed from "../seed.js";
 import type * as session from "../session.js";
 import type * as teams from "../teams.js";
+import type * as views from "../views.js";
 import type * as workflowStates from "../workflowStates.js";
 import type * as workspaces from "../workspaces.js";
 
@@ -58,6 +59,7 @@ declare const fullApi: ApiFromModules<{
   seed: typeof seed;
   session: typeof session;
   teams: typeof teams;
+  views: typeof views;
   workflowStates: typeof workflowStates;
   workspaces: typeof workspaces;
 }>;

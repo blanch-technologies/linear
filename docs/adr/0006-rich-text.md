@@ -12,7 +12,7 @@ search and future export.
 ## Decision
 
 - **Storage:** ProseMirror JSON, as a string (`issues.description`, `comments.body`). Next to it, a
-  plain-text copy (`descriptionText`, `bodyText`) feeds Convex full-text search (ADR 0008), inbox
+  plain-text copy (`descriptionText`, `bodyText`) feeds Convex full-text search (ADR 0009), inbox
   previews, and email.
   - JSON round-trips through TipTap without loss, which Markdown wouldn't (mentions, task state).
   - Export to Markdown is a pure function over the same tree when we need it.
