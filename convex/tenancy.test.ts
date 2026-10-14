@@ -108,6 +108,31 @@ describe("cross-tenant isolation", () => {
     }
   });
 
+  it("treats the other workspace's issues as missing on every issue endpoint", async () => {
+    const asAlice = a.as(alice);
+    const mine = (await asAlice.mutation(api.issues.create, { teamId: aTeam, title: "Mine" })).issueId;
+    expect(await asAlice.query(api.issues.get, { identifier: "OPS-1" })).toBeNull();
+    expect(await errorCode(asAlice.query(api.issues.activity, { issueId: bIssue }))).toBe("NOT_FOUND");
+    expect(await errorCode(asAlice.query(api.labels.list, { teamId: bTeam }))).toBe("NOT_FOUND");
+    for (const call of [
+      asAlice.mutation(api.issues.update, { issueId: bIssue, title: "x" }),
+      asAlice.mutation(api.issues.move, { issueId: bIssue, teamId: aTeam }),
+      asAlice.mutation(api.issues.move, { issueId: mine, teamId: bTeam }),
+      asAlice.mutation(api.issues.remove, { issueId: bIssue }),
+      asAlice.mutation(api.issues.restore, { issueId: bIssue }),
+      asAlice.mutation(api.issues.setSubscribed, { issueId: bIssue, subscribed: true }),
+      asAlice.mutation(api.issues.addRelation, { issueId: mine, relatedIssueId: bIssue, type: "related" }),
+      asAlice.mutation(api.issues.update, { issueId: mine, parentId: bIssue }),
+    ]) {
+      expect(await errorCode(call)).toBe("NOT_FOUND");
+    }
+    const bLabel = await b.as(bob).mutation(api.labels.create, { teamId: null, name: "Globex", color: "#83858e" });
+    expect(await errorCode(asAlice.mutation(api.issues.update, { issueId: mine, labelIds: [bLabel] }))).toBe("INVALID");
+    expect(await errorCode(asAlice.mutation(api.issues.update, { issueId: mine, assigneeId: bob.userId }))).toBe("INVALID");
+    expect((await asAlice.query(api.labels.all, {})).map((l) => l.name)).toEqual([]);
+    expect(await asAlice.query(api.issues.recentlyDeleted, {})).toEqual([]);
+  });
+
   it("leaves the other workspace untouched", async () => {
     const issues = await b.as(bob).query(api.issues.listForTeam, { teamId: bTeam, paginationOpts: page });
     expect(issues.page.map((issue) => issue.title)).toEqual(["Globex secret"]);

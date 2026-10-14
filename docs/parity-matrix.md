@@ -13,14 +13,14 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 | Create issue (composer, `C`, inline property pills, create-more) | P0 | Opens in under 100 ms; title + description + status/priority/assignee/labels/project/cycle | todo |
 | Routed issue page with stable URL, breadcrumbs, prev/next, copy ID/URL/branch | P0 | Sidebar stays visible | todo |
 | Properties: status, priority, assignee, labels, estimate, due date, project, cycle, milestone | P0 | Each editable from list, board, page, and keyboard | todo |
-| Sub-issues and parent | P0 | Hierarchy cycle prevention | todo |
-| Relations: blocks, blocked by, related, duplicate | P0 | | todo |
+| Sub-issues and parent | P0 | Hierarchy cycle prevention (backend done) | in progress |
+| Relations: blocks, blocked by, related, duplicate | P0 | Backend done; UI with the issue page | in progress |
 | Rich-text description (headings, lists, code, links, images, mentions, slash menu) | P0 | TipTap | todo |
 | Comments: threads, edit, delete, reactions, resolve, mentions | P0 | | todo |
 | Attachments and file upload | P0 | 10 MB+ limit, authorized downloads | todo |
-| Issue history / activity timeline | P0 | Append-only events | todo |
-| Subscriptions and notifications on changes | P0 | | todo |
-| Soft delete, Recently deleted, restore, archive | P0 | 30-day purge | todo |
+| Issue history / activity timeline | P0 | Append-only `issueHistory`, resolved for display (backend done) | in progress |
+| Subscriptions and notifications on changes | P0 | ADR 0007; generated in the write path (backend done) | in progress |
+| Soft delete, Recently deleted, restore, archive | P0 | 30-day purge cron (backend done) | in progress |
 | Bulk select and actions | P1 | | todo |
 | Issue templates | P1 | | todo |
 | Estimates (points / t-shirt / exponential) | P1 | Team setting | todo |
@@ -81,7 +81,7 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 | Invitations (email, revoke) | P0 | WorkOS invitations: invite (bulk), copy link, resend, revoke; Resend email later (blockers #7) | done |
 | Teams: hierarchy, public/restricted/private visibility, membership | P0 | ADR 0003 and the D-20 matrix; settings: list, create, sub-teams, visibility, reparent, delete, members, join/leave; e2e in `e2e/teams.spec.ts` | done |
 | Workflow states per team (categories, order, default) | P0 | D-27 defaults, one default, one per required category; settings: add, edit, color, reorder, default, delete with issue reassignment | done |
-| Labels (workspace and team, groups) | P0 | | todo |
+| Labels (workspace and team, groups) | P0 | One label per group; delete detaches from issues (backend done) | in progress |
 | Team settings: triage, cycles, estimates, templates, auto-archive | P1 | | todo |
 | Workspace settings: name, URL, logo, preferences | P1 | | todo |
 | Keyboard shortcuts overlay and customization | P1 | Overlay generated from the registry (Phase 1); customization later | in progress |
