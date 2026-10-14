@@ -12,5 +12,4 @@ test("signed-out visitors are sent to AuthKit sign-in", async ({ page }) => {
   expect(page.url()).toMatch(/authkit\.app|workos\.com/);
 });
 
-// The signed-in shell (sidebar, theme, a11y) is covered once the D-41 test-auth
-// path lands in Phase 1; it needs a minted session that Convex accepts.
+// Signed-in flows use the D-41 test-auth path: see e2e/support.ts.
