@@ -10,6 +10,14 @@ const out = process.env.SCREENSHOT_DIR ?? "test-results/screenshots";
 
 test("capture", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
+  // Hide the Next.js dev badge.
+  await page.addInitScript(() => {
+    document.addEventListener("DOMContentLoaded", () => {
+      const style = document.createElement("style");
+      style.textContent = "nextjs-portal { display: none !important; }";
+      document.head.append(style);
+    });
+  });
   await signIn(page, "shots", { displayName: "Sam Shots" });
   await page.goto("/onboarding");
   await page.getByLabel("Workspace name").fill("Acme Labs");
@@ -26,6 +34,28 @@ test("capture", async ({ page }) => {
   await page.waitForTimeout(300);
   await page.screenshot({ path: `${out}/workspace-menu.png` });
   await page.keyboard.press("Escape");
+  await page.keyboard.press("ControlOrMeta+k");
+  await page.getByRole("dialog", { name: "Command menu" }).waitFor();
+  await page.waitForTimeout(300);
+  await page.screenshot({ path: `${out}/command-menu.png` });
+  await page.keyboard.press("Escape");
+  await page.getByRole("dialog").waitFor({ state: "detached" });
+  await page.keyboard.press("?");
+  await page.getByRole("dialog", { name: "Keyboard shortcuts" }).waitFor();
+  await page.waitForTimeout(300);
+  await page.screenshot({ path: `${out}/shortcuts-help.png` });
+  await page.keyboard.press("Escape");
+  await page.getByRole("dialog").waitFor({ state: "detached" });
+  await page.goto(`/${urlKey}/settings/teams`);
+  await page.getByRole("button", { name: "Create team" }).waitFor();
+  await page.screenshot({ path: `${out}/settings-teams.png` });
+  await page.getByTestId("team-row").first().getByRole("link").click();
+  await page.getByRole("link", { name: "Workflow" }).click();
+  await page.getByTestId("state-row").first().waitFor();
+  await page.screenshot({ path: `${out}/settings-workflow.png` });
+  await page.goto(`/${urlKey}/settings/members`);
+  await page.getByTestId("member-row").first().waitFor();
+  await page.screenshot({ path: `${out}/settings-members.png` });
   await page.goto(`/${urlKey}/settings/workspace`);
   await page.getByLabel("Name").waitFor();
   await page.screenshot({ path: `${out}/settings-workspace.png` });

@@ -84,7 +84,7 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 | Labels (workspace and team, groups) | P0 | | todo |
 | Team settings: triage, cycles, estimates, templates, auto-archive | P1 | | todo |
 | Workspace settings: name, URL, logo, preferences | P1 | | todo |
-| Keyboard shortcuts overlay and customization | P1 | | todo |
+| Keyboard shortcuts overlay and customization | P1 | Overlay generated from the registry (Phase 1); customization later | in progress |
 | Themes (light, dark, system) | P0 | Tokens and user-menu toggle shipped in Phase 0 (ADR 0002); light values provisional pending Linear references | in progress |
 | Import/export (CSV, full backup) | P1 | | todo |
 | Linear importer | P2 (Phase 6) | | todo |
@@ -123,8 +123,8 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 | Design tokens: color ramps, type scale, spacing, radii, shadows, motion | P0 | Measured from reference. Colors, layout dimensions, modal shadow in `globals.css` (Phase 0); type scale and motion pending | in progress |
 | Dark and light themes | P0 | AA contrast enforced by `src/lib/theme/contrast.test.ts` | in progress |
 | Sidebar structure and behavior | P0 | D-37 structure, 246px rail, drawer under 850px; workspace menu, collapsible groups, nested team items with guide line (Phase 1) | in progress |
-| Command menu (`Cmd+K`) with contextual actions | P0 | | todo |
-| Global keyboard model (go-to sequences, list actions) | P0 | | todo |
+| Command menu (`Cmd+K`) with contextual actions | P0 | Navigation, teams, workspace actions, switch workspace, theme, help (Phase 1); issue actions arrive with issues | in progress |
+| Global keyboard model (go-to sequences, list actions) | P0 | Single registry with conflict test (`src/lib/shortcuts`), help overlay (`?`), `/`, G-sequences, Esc, ⌘Enter; list/property keys in Phase 2 | in progress |
 | Row density, hover/selected/focus states, icons | P0 | Own icon set | todo |
 | Empty, loading, error states | P0 | | todo |
 | Animations and transitions | P1 | | todo |

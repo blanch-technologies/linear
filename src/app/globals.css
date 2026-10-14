@@ -22,6 +22,8 @@
   --line: #e1e2e6;
   --text: #1b1c20;
   --text-muted: #61636c;
+  /* Secondary text on raised surfaces (surface-2/3), where --text-muted is too dim. */
+  --text-muted-strong: #585a63;
   --text-faint: #9a9ca5;
   --brand: #6553e0;
   --brand-hover: #5544cc;
@@ -46,6 +48,7 @@
   --line: #2a2b31;
   --text: #e4e5e8;
   --text-muted: #83858e;
+  --text-muted-strong: #9a9ca4;
   --text-faint: #5d5f68;
   --brand: #8e7cf8;
   --brand-hover: #7465da;
@@ -134,6 +137,7 @@
   --color-surface-2: var(--surface-2);
   --color-surface-3: var(--surface-3);
   --color-faint: var(--text-faint);
+  --color-muted-strong: var(--text-muted-strong);
   --color-brand: var(--brand);
   --color-brand-hover: var(--brand-hover);
   --color-green: var(--green);

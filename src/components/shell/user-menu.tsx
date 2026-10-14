@@ -2,7 +2,7 @@
 
 import { useAuth } from "@workos-inc/authkit-nextjs/components";
 import { useTheme } from "next-themes";
-import { LogOut, Monitor, Moon, Sun } from "lucide-react";
+import { Keyboard, LogOut, Monitor, Moon, Sun } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,16 +11,19 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useCommandUI } from "@/components/shortcuts/global-shortcuts";
 import { UserAvatar } from "./user-avatar";
 
 export function UserMenu() {
   const { user, signOut } = useAuth();
   const { theme, setTheme } = useTheme();
+  const { openHelp } = useCommandUI();
   const name = [user?.firstName, user?.lastName].filter(Boolean).join(" ") || user?.email || "";
 
   return (
@@ -50,6 +53,10 @@ export function UserMenu() {
             </DropdownMenuRadioGroup>
           </DropdownMenuSubContent>
         </DropdownMenuSub>
+        <DropdownMenuItem onSelect={openHelp}>
+          <Keyboard aria-hidden /> Keyboard shortcuts
+          <DropdownMenuShortcut>?</DropdownMenuShortcut>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={() => signOut()}>
           <LogOut aria-hidden /> Sign out
