@@ -10,12 +10,12 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 
 | Feature | Tier | Notes / acceptance | Status |
 |---|---|---|---|
-| Create issue (composer, `C`, inline property pills, create-more) | P0 | Opens in under 100 ms; title + description + status/priority/assignee/labels/project/cycle | todo |
+| Create issue (composer, `C`, inline property pills, create-more) | P0 | Composer with rich description, status/priority/assignee/labels/estimate/due pills, create more, drafts (Phase 2); project/cycle with Phase 3 | in progress |
 | Routed issue page with stable URL, breadcrumbs, prev/next, copy ID/URL/branch | P0 | Sidebar stays visible | todo |
 | Properties: status, priority, assignee, labels, estimate, due date, project, cycle, milestone | P0 | Each editable from list, board, page, and keyboard | todo |
 | Sub-issues and parent | P0 | Hierarchy cycle prevention (backend done) | in progress |
 | Relations: blocks, blocked by, related, duplicate | P0 | Backend done; UI with the issue page | in progress |
-| Rich-text description (headings, lists, code, links, images, mentions, slash menu) | P0 | TipTap | todo |
+| Rich-text description (headings, lists, code, links, images, mentions, slash menu) | P0 | TipTap editor with markdown shortcuts, task lists, safe links, @mentions (ADR 0006); images, #issues, slash menu with the issue page | in progress |
 | Comments: threads, edit, delete, reactions, resolve, mentions | P0 | | todo |
 | Attachments and file upload | P0 | 10 MB+ limit, authorized downloads | todo |
 | Issue history / activity timeline | P0 | Append-only `issueHistory`, resolved for display (backend done) | in progress |

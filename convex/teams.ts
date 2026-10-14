@@ -39,6 +39,7 @@ function summarize(viewer: Viewer, doc: Doc<"teams">) {
     description: doc.description ?? "",
     parentId: doc.parentId,
     visibility: doc.visibility,
+    estimateScale: doc.estimateScale ?? null,
     teamRole: actor.teams.get(doc._id) ?? null,
     can: {
       read: canReadTeamContent(actor, team),
@@ -377,5 +378,41 @@ export const setMemberRole = workspaceMutation({
       metadata: { from: existing.role, to: role },
     });
     return null;
+  },
+});
+
+/**
+ * People who can read a team's issues: assignee and @-mention candidates.
+ * Readability depends only on membership in this team and its parent, so
+ * that's all each candidate's actor carries.
+ */
+export const assignable = workspaceQuery({
+  args: { teamId: v.id("teams") },
+  handler: async ({ db, viewer }, { teamId }) => {
+    const doc = requireTeam(viewer, teamId, "read");
+    const team = toTeam(doc);
+    const [members, teamRows, parentRows] = await Promise.all([
+      db
+        .query("memberships")
+        .withIndex("by_workspace_and_status_and_role", (q) => q.eq("workspaceId", doc.workspaceId).eq("status", "active"))
+        .take(5000),
+      db.query("teamMembers").withIndex("by_team", (q) => q.eq("teamId", doc._id)).take(5000),
+      doc.parentId ? db.query("teamMembers").withIndex("by_team", (q) => q.eq("teamId", doc.parentId!)).take(5000) : Promise.resolve([]),
+    ]);
+    const inTeam = new Map(teamRows.map((row) => [row.userId as string, row.role]));
+    const inParent = new Map(parentRows.map((row) => [row.userId as string, row.role]));
+    const people = [];
+    for (const membership of members) {
+      const teams = new Map<string, TeamRole>();
+      const own = inTeam.get(membership.userId);
+      if (own) teams.set(doc._id, own);
+      const parent = inParent.get(membership.userId);
+      if (parent && doc.parentId) teams.set(doc.parentId, parent);
+      const actor = { workspaceId: doc.workspaceId, userId: membership.userId, role: membership.role, teams };
+      if (!canReadTeamContent(actor, team)) continue;
+      const user = await db.get(membership.userId);
+      if (user) people.push({ ...userSummary(user), inTeam: inTeam.has(membership.userId) });
+    }
+    return people.sort((a, b) => Number(b.inTeam) - Number(a.inTeam) || a.name.localeCompare(b.name));
   },
 });

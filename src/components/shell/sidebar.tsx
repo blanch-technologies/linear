@@ -6,6 +6,7 @@ import { ChevronRight, Command, Plus, Search, SquarePen } from "lucide-react";
 import { Kbd } from "@/components/ui/kbd";
 import { useCommandUI } from "@/components/shortcuts/global-shortcuts";
 import { ShortcutKeys } from "@/components/shortcuts/shortcut-keys";
+import { useComposer } from "@/components/issues/composer";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useWorkspace, type TeamSummary } from "@/components/workspace/workspace-context";
@@ -148,6 +149,7 @@ function TeamItem({
 export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   const { href, teams, viewer, can } = useWorkspace();
   const { openCommandMenu } = useCommandUI();
+  const composer = useComposer();
   const { roots, children } = teamTree(teams);
   const isGuest = viewer.role === "guest";
 
@@ -183,11 +185,21 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="secondary" size="icon-sm" aria-label="New issue" disabled>
+              <Button
+                variant="secondary"
+                size="icon-sm"
+                aria-label="New issue"
+                onClick={() => {
+                  onNavigate?.();
+                  composer.open();
+                }}
+              >
                 <SquarePen aria-hidden />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>New issue (Phase 2)</TooltipContent>
+            <TooltipContent>
+              New issue <ShortcutKeys id="create-issue" />
+            </TooltipContent>
           </Tooltip>
         </div>
       </div>

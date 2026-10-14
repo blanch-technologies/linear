@@ -5,6 +5,7 @@ import type { ShortcutDefinition } from "./registry";
  * list); components attach handlers by id with `useShortcut`.
  */
 export const shortcuts = [
+  { id: "create-issue", keys: "c", description: "Create issue", group: "General", scope: "global" },
   { id: "command-menu", keys: "mod+k", description: "Open command menu", group: "General", scope: "global", allowInInputs: true },
   { id: "help", keys: "?", description: "Show keyboard shortcuts", group: "General", scope: "global" },
   { id: "search", keys: "/", description: "Search", group: "General", scope: "global" },
