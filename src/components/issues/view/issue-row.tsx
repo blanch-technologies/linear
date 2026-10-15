@@ -83,10 +83,21 @@ export const IssueListRow = memo(function IssueListRow({
       data-testid="issue-row"
       data-identifier={issue.identifier}
       onMouseEnter={onFocus}
+      // Shift-click shouldn't also select text.
+      onMouseDown={(event) => event.shiftKey && event.preventDefault()}
       onClick={(event) => {
-        if (event.metaKey || event.ctrlKey) return;
-        if ((event.target as HTMLElement).closest("a, input")) return;
-        onOpen();
+        const target = event.target as HTMLElement;
+        if (target.closest("input")) return;
+        // Shift-click selects a range, even on the title link (instead of a new window).
+        if (event.shiftKey) {
+          event.preventDefault();
+          onToggleSelect(true);
+          return;
+        }
+        // ⌘/Ctrl-click toggles one issue; on the title it keeps opening a new tab.
+        if (target.closest("a")) return;
+        if (event.metaKey || event.ctrlKey) onToggleSelect(false);
+        else onOpen();
       }}
       className={cn(
         "group/row flex h-[38px] cursor-default items-center gap-2 border-b border-border/60 pr-4 pl-2 text-[13px]",

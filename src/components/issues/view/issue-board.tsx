@@ -133,7 +133,7 @@ function Column({ group, lookups, onCreate, children }: { group: ViewGroup; look
     <section
       ref={setNodeRef}
       role="listitem"
-      aria-label={`${group.label}, ${group.issues.length} issues`}
+      aria-label={`${group.label}, ${group.issues.length} ${group.issues.length === 1 ? "issue" : "issues"}`}
       data-testid="board-column"
       className={cn("flex w-[280px] shrink-0 flex-col rounded-lg bg-surface-2/60", isOver && "ring-2 ring-brand/50")}
     >

@@ -11,6 +11,7 @@ import { useShortcut } from "@/components/shortcuts/shortcuts-provider";
 import { useWorkspace } from "@/components/workspace/workspace-context";
 import { emptyFilter, parseFilter, serializeFilter, type Filter } from "@/lib/filters";
 import { defaultDisplay, parseDisplay, type Display } from "@/lib/filters/views";
+import { selectRange, toggleOne } from "@/lib/issues/selection";
 import { useUpdateIssue } from "../use-update-issue";
 import type { IssueRow } from "../use-issue-data";
 import { IssueBoard, type BoardMove } from "./issue-board";
@@ -95,6 +96,8 @@ export function IssueView({
 
   const [focusedId, setFocusedId] = useState<string | null>(null);
   const [selected, setSelected] = useState<ReadonlySet<string>>(new Set());
+  // Where shift-click ranges start: the last issue toggled on its own.
+  const [anchor, setAnchor] = useState<string | null>(null);
   const [picker, setPicker] = useState<{ id: string; kind: PickerKind } | null>(null);
   const [collapsed, setCollapsed] = useState<ReadonlySet<string>>(new Set());
 
@@ -147,11 +150,20 @@ export function IssueView({
   useShortcut("select", () => {
     const id = focusedOrFirst();
     if (!id) return;
-    const next = new Set(selected);
-    if (next.has(id)) next.delete(id);
-    else next.add(id);
-    setSelected(next);
+    setSelected(toggleOne(selected, id));
+    setAnchor(id);
   }, isList);
+  const extend = (delta: number) => {
+    const from = focusedOrFirst();
+    if (!from) return;
+    const index = order.findIndex((i) => i.id === from);
+    const to = order[Math.max(0, Math.min(order.length - 1, index + delta))]!.id;
+    setSelected(new Set(selected).add(from).add(to));
+    if (!anchor) setAnchor(from);
+    setFocusedId(to);
+  };
+  useShortcut("select-down", () => extend(1), isList);
+  useShortcut("select-up", () => extend(-1), isList);
   useShortcut("open-issue", () => {
     const active = document.activeElement;
     if (active && active !== document.body && active.closest("button, a, [role=dialog]")) return;
@@ -171,7 +183,10 @@ export function IssueView({
   useEffect(() => {
     if (selected.size === 0) return;
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && !document.querySelector('[role="dialog"], [role="menu"], [data-radix-popper-content-wrapper]')) setSelected(new Set());
+      if (event.key === "Escape" && !document.querySelector('[role="dialog"], [role="menu"], [data-radix-popper-content-wrapper]')) {
+        setSelected(new Set());
+        setAnchor(null);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -188,14 +203,18 @@ export function IssueView({
     [composer, scopeTeamId],
   );
 
-  const toggleSelect = useCallback((id: string) => {
-    setSelected((current) => {
-      const next = new Set(current);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }, []);
+  const orderIds = useMemo(() => order.map((i) => i.id), [order]);
+  const toggleSelect = useCallback(
+    (id: string, range: boolean) => {
+      if (range) {
+        setSelected((current) => selectRange(orderIds, current, anchor, id));
+      } else {
+        setSelected((current) => toggleOne(current, id));
+        setAnchor(id);
+      }
+    },
+    [orderIds, anchor],
+  );
 
   const ready = !loading && lookups.ready;
   return (
@@ -220,7 +239,7 @@ export function IssueView({
         </div>
       )}
       {!ready ? (
-        <div className="space-y-2 p-4" aria-busy="true" aria-label="Loading issues">
+        <div className="space-y-2 p-4" role="status" aria-busy="true" aria-label="Loading issues">
           {Array.from({ length: 8 }, (_, i) => (
             <Skeleton key={i} className="h-7 w-full" />
           ))}

@@ -44,7 +44,13 @@ export async function createWorkspace(page: Page, label: string): Promise<{ name
   await page.getByRole("button", { name: "Create workspace" }).click();
   await page.waitForURL(`**/${urlKey}/my-issues/assigned`, { timeout: 30_000 });
   await expect(page.getByTestId("workspace-menu")).toContainText(name);
+  await shortcutsReady(page);
   return { name, urlKey };
+}
+
+/** Waits until the app listens for keys (it renders on the server before it hydrates). */
+export async function shortcutsReady(page: Page) {
+  await expect(page.locator("html[data-shortcuts=ready]")).toHaveCount(1);
 }
 
 /** Waits for an element's enter animations, so axe doesn't sample mid-fade colors. */

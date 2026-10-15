@@ -38,7 +38,9 @@ export function useDerivedView(rows: IssueRow[], filter: Filter, display: Displa
     } else if (by === "priority") order = [1, 2, 3, 4, 0].map(String);
     else if (by === "assignee") order = ["none", ...lookups.peopleList.map((p) => p.id)];
     else if (by === "label") order = [...lookups.labelList.map((l) => l.id), "none"];
-    return grouped(sorted, by, order, display.showEmptyGroups, statusKey).map((group) => {
+    // Board columns for status and priority are drop targets, so they show even when empty.
+    const showEmpty = display.showEmptyGroups || (display.layout === "board" && (by === "status" || by === "priority"));
+    return grouped(sorted, by, order, showEmpty, statusKey).map((group) => {
       let label = "All issues";
       if (by === "status") {
         const sample = singleTeam ? lookups.states.get(group.key) : lookups.stateList.find((s) => `${s.category}:${s.name}` === group.key);
@@ -48,7 +50,7 @@ export function useDerivedView(rows: IssueRow[], filter: Filter, display: Displa
       else if (by === "label") label = group.key === "none" ? "No labels" : (lookups.labels.get(group.key)?.name ?? "Deleted label");
       return { ...group, label, kind: by };
     });
-  }, [sorted, display.groupBy, display.showEmptyGroups, lookups, singleTeam, teamId]);
+  }, [sorted, display.groupBy, display.showEmptyGroups, display.layout, lookups, singleTeam, teamId]);
 
   return { groups, count: shown.length };
 }

@@ -20,6 +20,8 @@ export const shortcuts = [
   { id: "list-up", keys: "k", description: "Previous issue", group: "Lists", scope: "global" },
   { id: "open-issue", keys: "enter", description: "Open the focused issue", group: "Lists", scope: "global" },
   { id: "select", keys: "x", description: "Select the focused issue", group: "Lists", scope: "global" },
+  { id: "select-down", keys: "shift+j", description: "Extend selection down", group: "Lists", scope: "global" },
+  { id: "select-up", keys: "shift+k", description: "Extend selection up", group: "Lists", scope: "global" },
   { id: "set-status", keys: "s", description: "Change status", group: "Lists", scope: "global" },
   { id: "set-priority", keys: "p", description: "Set priority", group: "Lists", scope: "global" },
   { id: "assign", keys: "a", description: "Assign", group: "Lists", scope: "global" },

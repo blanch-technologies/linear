@@ -10,9 +10,13 @@ type Registry = { register: (id: ShortcutId, handler: Handler) => () => void };
 
 const ShortcutContext = createContext<Registry | null>(null);
 
+// Inputs that don't take typing, so a focused checkbox doesn't swallow shortcuts.
+const nonTextInputs = new Set(["checkbox", "radio", "button", "submit", "reset", "range", "color", "file", "image"]);
+
 function isEditable(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
-  return target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName);
+  if (target instanceof HTMLInputElement) return !nonTextInputs.has(target.type);
+  return target.isContentEditable || ["TEXTAREA", "SELECT"].includes(target.tagName);
 }
 
 /** A dialog, menu, or popover is open: page-level shortcuts stand down. */
@@ -62,6 +66,8 @@ export function ShortcutsProvider({ children }: { children: ReactNode }) {
       handler();
     }
     window.addEventListener("keydown", onKeyDown);
+    // Marks hydration: keys pressed before this are lost, so e2e waits for it.
+    document.documentElement.dataset.shortcuts = "ready";
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [matcher, inSettings]);
 
