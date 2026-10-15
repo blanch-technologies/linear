@@ -41,7 +41,7 @@ export function parseDisplay(json: string | null | undefined): Display {
 
 const dayMs = 24 * 60 * 60 * 1000;
 
-export function visible<T extends FilterableIssue>(issues: T[], filter: Filter, display: Display, ctx: FilterContext): T[] {
+export function visible<T extends FilterableIssue>(issues: T[], filter: Filter, display: Pick<Display, "showCompleted" | "showSubIssues">, ctx: FilterContext): T[] {
   const window = display.showCompleted === "week" ? 7 * dayMs : display.showCompleted === "month" ? 30 * dayMs : null;
   return issues.filter((issue) => {
     const closed = issue.stateCategory === "completed" || issue.stateCategory === "canceled";

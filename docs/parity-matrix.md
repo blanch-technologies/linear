@@ -34,8 +34,8 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 
 | Feature | Tier | Notes | Status |
 |---|---|---|---|
-| List view with grouping, sub-grouping, ordering, display properties | P0 | Virtualized list, grouping, ordering, display options, keyboard (PR #12); sub-grouping later | in progress |
-| Board view with drag and drop between states | P0 | dnd-kit board, moves change the grouped property (PR #12) | in progress |
+| List view with grouping, sub-grouping, ordering, display properties | P0 | Virtualized list, grouping, ordering, display options, keyboard, X/shift-click/⌘-click/shift+J/K selection with bulk edits (PR #12); passes the ADR 0005 gate on 10k issues; sub-grouping later | in progress |
+| Board view with drag and drop between states | P0 | dnd-kit board, moves change the grouped property; empty status and priority columns always shown as drop targets; drag e2e in `e2e/lists.spec.ts` (PR #12) | in progress |
 | Filters (AND/OR, all property types), quick filters | P0 | AST + evaluation + serialization (ADR 0008); UI with the list | in progress |
 | Saved/custom views (personal and shared), favorites | P0 | Saved views backend with scopes (ADR 0008); UI later | in progress |
 | Search page with tabs (All, Issues, Projects, Documents) | P0 | Convex full-text | todo |

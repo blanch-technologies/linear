@@ -1,6 +1,6 @@
 # Project status and hand-off notes
 
-Last updated 2026-10-14. Read this after `CLAUDE.md` and before starting work. Keep it current:
+Last updated 2026-10-15. Read this after `CLAUDE.md` and before starting work. Keep it current:
 update it in the same PR whenever the PR stack, external setup, or next steps change.
 
 ## Where things stand
@@ -14,11 +14,13 @@ update it in the same PR whenever the PR stack, external setup, or next steps ch
 
 ## Remaining Phase 2 work (handoff Part C), in suggested order
 
-1. **Finish #12** (list and board):
-   - Board drag between columns has no e2e test yet.
-   - Selection with shift-click ranges is still missing.
-   - Re-run the O-3 harness (ADR 0005) on the real list against the 5k seed (`pnpm seed --perf`,
-     `e2e/perf`).
+1. **Finish #12** (list and board): feature-complete and CI-green. It needs the owner's review, then
+   merge. Done on 2026-10-15:
+   - Range selection (shift-click, ⌘-click, shift+J/K) and a board drag e2e test.
+   - The ADR 0005 gate re-run on the real list: it passes, see the ADR's Phase 2 section.
+     It caught that the shell had disabled virtualization.
+   - CI e2e fixes: the Vercel Toolbar swallowed keypresses on previews, and test auth now handles
+     WorkOS organization selection.
 2. **Routed issue page** `/<workspace>/issue/<ID>`:
    - Breadcrumbs, prev/next, copy ID/URL/branch (`branchName` in `src/lib/issues`).
    - Property rail (pickers exist), title, and description editor saving with `expectedVersion`.
@@ -68,6 +70,15 @@ update it in the same PR whenever the PR stack, external setup, or next steps ch
 - **The local dev server can serve stale CSS** after `globals.css` edits. Restart `pnpm dev`.
 - **E2E users must be `@blanch.test`** (test auth refuses anything else). Keep the run prefix in any
   workspace you rename, so global teardown can delete it.
+- **pnpm is installed under Node 24** (`.nvmrc`). Non-interactive shells may only have Node 22 on
+  `PATH`, so prefix `PATH=$HOME/.nvm/versions/node/v24.21.0/bin:$PATH`.
+- **The Vercel Toolbar on previews takes keypresses.** Playwright sends `x-vercel-skip-toolbar: 1`
+  (`playwright.config.ts`). Keep it if you change the headers.
+- **Cache Components keeps the previous route mounted but hidden.** Test IDs can match twice, so use
+  `.filter({ visible: true })`. Before pressing keys after a navigation, wait for
+  `html[data-shortcuts=ready]` (`shortcutsReady` in `e2e/support.ts`).
+- **Views need a bounded height.** The shell is `h-dvh` and `<main>` scrolls. A list or board
+  container without `min-h-0` silently renders every row.
 
 ## Running checks without secrets
 

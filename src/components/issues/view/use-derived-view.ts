@@ -19,7 +19,11 @@ export function useDerivedView(rows: IssueRow[], filter: Filter, display: Displa
   const singleTeam = teamId !== null;
   // `now` only matters for relative dates and completion windows; fixed per mount.
   const [now] = useState(() => Date.now());
-  const shown = useMemo(() => visible(rows, filter, display, { viewerId, now }), [rows, filter, display, viewerId, now]);
+  const { showCompleted, showSubIssues } = display;
+  const shown = useMemo(
+    () => visible(rows, filter, { showCompleted, showSubIssues }, { viewerId, now }),
+    [rows, filter, showCompleted, showSubIssues, viewerId, now],
+  );
   const sorted = useMemo(() => ordered(shown, display.orderBy), [shown, display.orderBy]);
 
   const groups = useMemo<ViewGroup[]>(() => {

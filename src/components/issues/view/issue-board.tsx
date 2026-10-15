@@ -148,7 +148,7 @@ function Column({ group, lookups, onCreate, children }: { group: ViewGroup; look
           </Button>
         )}
       </header>
-      <div className="flex min-h-16 flex-col gap-2 overflow-y-auto px-2 pb-2">{children}</div>
+      <div className="flex min-h-16 flex-1 basis-0 flex-col gap-2 overflow-y-auto px-2 pb-2">{children}</div>
     </section>
   );
 }

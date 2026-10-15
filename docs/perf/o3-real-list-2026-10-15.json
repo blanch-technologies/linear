@@ -1,0 +1,81 @@
+{
+  "at": "2026-10-15T03:02:28.031Z",
+  "build": "production (next build && next start)",
+  "page": "/acme-demo/team/PERF/issues",
+  "results": [
+    {
+      "label": "desktop",
+      "cpuSlowdown": 1,
+      "loadMs": 6901,
+      "shown": 10000,
+      "heapMB": 51,
+      "group": {
+        "n": 24,
+        "p50": 33,
+        "p95": 38,
+        "max": 40
+      },
+      "sort": {
+        "n": 24,
+        "p50": 39,
+        "p95": 43,
+        "max": 50
+      },
+      "filter": {
+        "n": 16,
+        "p50": 37,
+        "p95": 69,
+        "max": 69
+      },
+      "scroll": {
+        "n": 39,
+        "p50": 19,
+        "p95": 22,
+        "max": 32
+      },
+      "priority (optimistic)": {
+        "n": 30,
+        "p50": 24,
+        "p95": 33,
+        "max": 34
+      }
+    },
+    {
+      "label": "4x CPU throttle",
+      "cpuSlowdown": 4,
+      "loadMs": 5069,
+      "shown": 10000,
+      "heapMB": 45,
+      "group": {
+        "n": 24,
+        "p50": 59,
+        "p95": 70,
+        "max": 72
+      },
+      "sort": {
+        "n": 24,
+        "p50": 77,
+        "p95": 96,
+        "max": 111
+      },
+      "filter": {
+        "n": 16,
+        "p50": 33,
+        "p95": 35,
+        "max": 35
+      },
+      "scroll": {
+        "n": 39,
+        "p50": 63,
+        "p95": 77,
+        "max": 95
+      },
+      "priority (optimistic)": {
+        "n": 30,
+        "p50": 31,
+        "p95": 51,
+        "max": 52
+      }
+    }
+  ]
+}

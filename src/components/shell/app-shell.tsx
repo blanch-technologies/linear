@@ -28,7 +28,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   const title = usePageTitle();
 
   return (
-    <div className="flex min-h-dvh">
+    // The shell fills the viewport and <main> scrolls, so views like the issue
+    // list get a bounded height to virtualize against (D-36).
+    <div className="flex h-dvh overflow-hidden">
       <aside className="fixed inset-y-0 left-0 z-20 hidden border-r border-sidebar-border nav:block">
         <Sidebar />
       </aside>
@@ -44,7 +46,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </SheetContent>
       </Sheet>
 
-      <div className="flex min-w-0 flex-1 flex-col nav:pl-sidebar">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col nav:pl-sidebar">
         <header className="sticky top-0 z-10 flex h-header items-center gap-2 border-b border-border bg-background px-4">
           <Button
             variant="ghost"
@@ -57,7 +59,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Button>
           <h1 className="font-medium">{title}</h1>
         </header>
-        <main className="flex flex-1 flex-col">{children}</main>
+        <main className="flex min-h-0 flex-1 flex-col overflow-y-auto">{children}</main>
       </div>
     </div>
   );
