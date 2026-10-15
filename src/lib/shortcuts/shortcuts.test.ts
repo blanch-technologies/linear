@@ -82,7 +82,7 @@ describe("sequence matching", () => {
   it("restarts from the current key after a dead sequence", () => {
     const matcher = new SequenceMatcher(shortcuts);
     matcher.match("g", 0, all);
-    expect(matcher.match("x", 10, all)).toBeNull();
+    expect(matcher.match("z", 10, all)).toBeNull();
     expect(matcher.match("?", 20, all)).toEqual({ id: "help" });
     matcher.match("g", 30, all);
     expect(matcher.match("/", 40, all)).toEqual({ id: "search" });

@@ -34,8 +34,8 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 
 | Feature | Tier | Notes | Status |
 |---|---|---|---|
-| List view with grouping, sub-grouping, ordering, display properties | P0 | Virtualized; O-3 spike (ADR 0005): subscriptions + TanStack Virtual meet D-36 at 10k issues | todo |
-| Board view with drag and drop between states | P0 | | todo |
+| List view with grouping, sub-grouping, ordering, display properties | P0 | Virtualized list, grouping, ordering, display options, keyboard, X/shift-click/⌘-click/shift+J/K selection with bulk edits (PR #12); passes the ADR 0005 gate on 10k issues; sub-grouping later | in progress |
+| Board view with drag and drop between states | P0 | dnd-kit board, moves change the grouped property; empty status and priority columns always shown as drop targets; drag e2e in `e2e/lists.spec.ts` (PR #12) | in progress |
 | Filters (AND/OR, all property types), quick filters | P0 | AST + evaluation + serialization (ADR 0008); UI with the list | in progress |
 | Saved/custom views (personal and shared), favorites | P0 | Saved views backend with scopes (ADR 0008); UI later | in progress |
 | Search page with tabs (All, Issues, Projects, Documents) | P0 | Convex full-text | todo |
@@ -47,7 +47,7 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 
 | Feature | Tier | Notes | Status |
 |---|---|---|---|
-| My Issues (assigned, created, subscribed, activity) | P0 | Persisted subscriptions and events, not inferred | todo |
+| My Issues (assigned, created, subscribed, activity) | P0 | Tabs from assignments, authorship, subscriptions, history (PR #12) | in progress |
 | Inbox (read/unread, snooze, delete, filters, keyboard triage) | P0 | | todo |
 | Notification preferences (in-app, email, per type) | P1 | | todo |
 | Email notifications and digests | P1 | Resend | todo |

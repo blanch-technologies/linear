@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { shortcuts } from "@/lib/shortcuts";
 import { ShortcutKeys } from "./shortcut-keys";
 
-const groups = ["General", "Navigation", "Forms"] as const;
+const groups = ["General", "Navigation", "Lists", "Forms"] as const;
 
 /** The keyboard shortcut reference, generated from the registry. */
 export function HelpOverlay({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
@@ -13,7 +13,7 @@ export function HelpOverlay({ open, onOpenChange }: { open: boolean; onOpenChang
       <DialogContent className="max-h-[80dvh] overflow-y-auto sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Keyboard shortcuts</DialogTitle>
-          <DialogDescription>More arrive with issues, lists, and boards.</DialogDescription>
+          <DialogDescription>List shortcuts act on the focused issue, or on every selected one.</DialogDescription>
         </DialogHeader>
         {groups.map((group) => (
           <section key={group} className="space-y-1">

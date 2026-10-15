@@ -1,5 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import { createWorkspace, expect, signIn, test } from "./support";
+import { createWorkspace, expect, settled, signIn, test } from "./support";
 
 test.describe("workspaces", () => {
   test("a new user creates a workspace and lands in its shell", async ({ page }) => {
@@ -20,7 +20,7 @@ test.describe("workspaces", () => {
     // Reload keeps the session scoped to the workspace.
     await page.reload();
     await expect(page.getByTestId("workspace-menu")).toContainText(name);
-    expect(new URL(page.url()).pathname).toBe(`/${urlKey}/my-issues`);
+    expect(new URL(page.url()).pathname).toBe(`/${urlKey}/my-issues/assigned`);
   });
 
   test("switches between workspaces from the workspace menu", async ({ page }) => {
@@ -29,12 +29,16 @@ test.describe("workspaces", () => {
     const second = await createWorkspace(page, "Second");
     await page.getByTestId("workspace-menu").click();
     await page.getByRole("menuitem", { name: first.name }).click();
-    await page.waitForURL(`**/${first.urlKey}/my-issues`);
+    await page.waitForURL(`**/${first.urlKey}/my-issues/assigned`);
     await expect(page.getByTestId("workspace-menu")).toContainText(first.name);
     // Visiting the other workspace's URL rescopes the session too.
     await page.goto(`/${second.urlKey}/inbox`);
     await expect(page.getByTestId("workspace-menu")).toContainText(second.name);
     await expect(page).toHaveURL(new RegExp(`/${second.urlKey}/inbox$`));
+    // Signing in again with two workspaces (WorkOS asks to pick one) still works.
+    await signIn(page, "switcher");
+    await page.goto(`/${first.urlKey}/inbox`);
+    await expect(page.getByTestId("workspace-menu")).toContainText(first.name);
   });
 
   test("another user can't open a workspace they don't belong to", async ({ browser }) => {
@@ -81,7 +85,7 @@ test.describe("workspaces", () => {
     }
     await page.setViewportSize({ width: 390, height: 844 });
     await page.getByRole("button", { name: "Open navigation" }).click();
-    await expect(page.getByRole("navigation", { name: "Main" })).toBeVisible();
+    await settled(page.getByRole("navigation", { name: "Main" }));
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   });
 });

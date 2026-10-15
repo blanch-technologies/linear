@@ -1,5 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import { createWorkspace, expect, signIn, test } from "./support";
+import { createWorkspace, expect, settled, signIn, test } from "./support";
 
 test.describe("keyboard and command menu (D-35)", () => {
   test("⌘K opens the command menu, which navigates and switches theme", async ({ page }) => {
@@ -8,7 +8,7 @@ test.describe("keyboard and command menu (D-35)", () => {
 
     await page.keyboard.press("ControlOrMeta+k");
     const menu = page.getByRole("dialog", { name: "Command menu" });
-    await expect(menu).toBeVisible();
+    await settled(menu);
     expect((await new AxeBuilder({ page }).include('[role="dialog"]').analyze()).violations).toEqual([]);
     await menu.getByRole("combobox", { name: "Command" }).fill("inbox");
     await page.keyboard.press("Enter");
@@ -45,7 +45,7 @@ test.describe("keyboard and command menu (D-35)", () => {
     await expect(help).toBeHidden();
     // With nothing open, Esc leaves settings.
     await page.keyboard.press("Escape");
-    await expect(page).toHaveURL(new RegExp(`/${urlKey}/my-issues$`));
+    await expect(page).toHaveURL(new RegExp(`/${urlKey}/my-issues/assigned$`));
   });
 
   test("shortcuts stay out of the way while typing; ⌘Enter submits forms", async ({ page }) => {

@@ -36,6 +36,17 @@ export async function POST(request: NextRequest) {
   const [firstName = "Test", ...rest] = (typeof body.name === "string" && body.name.trim() ? body.name : email.split("@")[0]!).split(/\s+/);
   const lastName = rest.join(" ") || "User";
 
+  try {
+    return await signIn(email, firstName, lastName, body.acceptInvitations === true, request);
+  } catch (error) {
+    // Surface WorkOS failures (rate limits, password rules) to the e2e run instead of an empty 500.
+    const message = error instanceof Error ? error.message : String(error);
+    const status = typeof (error as { status?: unknown }).status === "number" ? (error as { status: number }).status : 500;
+    return NextResponse.json({ error: message }, { status });
+  }
+}
+
+async function signIn(email: string, firstName: string, lastName: string, acceptInvitations: boolean, request: NextRequest) {
   const workos = getWorkOS();
   const password = `${randomBytes(24).toString("base64url")}aA1!`;
   const existing = (await workos.userManagement.listUsers({ email })).data[0];
@@ -44,17 +55,24 @@ export async function POST(request: NextRequest) {
   } else {
     await workos.userManagement.createUser({ email, password, emailVerified: true, firstName, lastName });
   }
-  if (body.acceptInvitations === true) {
+  if (acceptInvitations) {
     const invitations = await (await workos.userManagement.listInvitations({ email, limit: 100 })).autoPagination();
     for (const invitation of invitations) {
       if (invitation.state === "pending") await workos.userManagement.acceptInvitation(invitation.id);
     }
   }
-  const auth = await workos.userManagement.authenticateWithPassword({
-    clientId: serverEnv.WORKOS_CLIENT_ID,
-    email,
-    password,
-  });
+  const auth = await workos.userManagement
+    .authenticateWithPassword({ clientId: serverEnv.WORKOS_CLIENT_ID, email, password })
+    .catch(async (error: { code?: string; pendingAuthenticationToken?: string; rawData?: { organizations?: { id: string }[] } }) => {
+      // A user in several workspaces must pick one; any works, since the app rescopes from the URL.
+      const organizationId = error.rawData?.organizations?.[0]?.id;
+      if (error.code !== "organization_selection_required" || !error.pendingAuthenticationToken || !organizationId) throw error;
+      return workos.userManagement.authenticateWithOrganizationSelection({
+        clientId: serverEnv.WORKOS_CLIENT_ID,
+        pendingAuthenticationToken: error.pendingAuthenticationToken,
+        organizationId,
+      });
+    });
   await saveSession(auth, request);
   return NextResponse.json({ userId: auth.user.id });
 }

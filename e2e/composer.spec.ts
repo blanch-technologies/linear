@@ -1,5 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import { createWorkspace, expect, signIn, test } from "./support";
+import { createWorkspace, expect, settled, signIn, test } from "./support";
 
 test.describe("issue composer (D-37)", () => {
   test("C opens a writing-first composer; properties, create more, and drafts work", async ({ page }) => {
@@ -8,7 +8,7 @@ test.describe("issue composer (D-37)", () => {
 
     await page.keyboard.press("c");
     const composer = page.getByRole("dialog", { name: "New issue" });
-    await expect(composer).toBeVisible();
+    await settled(composer);
     expect((await new AxeBuilder({ page }).include('[role="dialog"]').analyze()).violations).toEqual([]);
 
     await composer.getByLabel("Issue title").fill("Sidebar collapses on reload");

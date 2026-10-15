@@ -41,7 +41,7 @@ export function parseDisplay(json: string | null | undefined): Display {
 
 const dayMs = 24 * 60 * 60 * 1000;
 
-export function visible<T extends FilterableIssue>(issues: T[], filter: Filter, display: Display, ctx: FilterContext): T[] {
+export function visible<T extends FilterableIssue>(issues: T[], filter: Filter, display: Pick<Display, "showCompleted" | "showSubIssues">, ctx: FilterContext): T[] {
   const window = display.showCompleted === "week" ? 7 * dayMs : display.showCompleted === "month" ? 30 * dayMs : null;
   return issues.filter((issue) => {
     const closed = issue.stateCategory === "completed" || issue.stateCategory === "canceled";
@@ -74,7 +74,14 @@ export type Group<T> = { key: string; issues: T[] };
  * category, priorities urgent first, ...); `showEmpty` keeps empty buckets.
  * Issues with several labels appear under each label.
  */
-export function grouped<T extends FilterableIssue>(issues: T[], groupBy: GroupField, order: string[], showEmpty: boolean): Group<T>[] {
+export function grouped<T extends FilterableIssue>(
+  issues: T[],
+  groupBy: GroupField,
+  order: string[],
+  showEmpty: boolean,
+  /** Status bucket for an issue; lists spanning teams merge same-named states. */
+  statusKey: (issue: T) => string = (issue) => issue.stateId,
+): Group<T>[] {
   if (groupBy === "none") return [{ key: "all", issues }];
   const buckets = new Map<string, T[]>(order.map((key) => [key, []]));
   const add = (key: string, issue: T) => {
@@ -82,7 +89,7 @@ export function grouped<T extends FilterableIssue>(issues: T[], groupBy: GroupFi
     buckets.get(key)!.push(issue);
   };
   for (const issue of issues) {
-    if (groupBy === "status") add(issue.stateId, issue);
+    if (groupBy === "status") add(statusKey(issue), issue);
     else if (groupBy === "priority") add(String(issue.priority), issue);
     else if (groupBy === "assignee") add(issue.assigneeId ?? "none", issue);
     else if (issue.labelIds.length === 0) add("none", issue);

@@ -62,7 +62,8 @@ test.describe("teams", () => {
     await admin.getByRole("button", { name: "Join Security" }).click();
     await expect(admin.getByText("You joined Security")).toBeVisible();
     await admin.goto(`/${urlKey}/team/SEC/issues`);
-    await expect(admin.getByRole("heading", { name: "Security issues" })).toBeVisible();
+    await expect(admin.getByRole("navigation", { name: "Views" })).toBeVisible();
+    await expect(admin.getByRole("heading", { name: "Security is private" })).toHaveCount(0);
   });
 
   test("edits the workflow: add, recolor, default, delete", async ({ page }) => {

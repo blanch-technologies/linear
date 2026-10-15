@@ -1,4 +1,4 @@
-import { expect, test as base, type APIRequestContext, type Page } from "@playwright/test";
+import { expect, test as base, type APIRequestContext, type Locator, type Page } from "@playwright/test";
 
 /*
  * Signed-in e2e support (D-41). Each run uses its own `@blanch.test` users and
@@ -31,20 +31,32 @@ export async function signIn(
   expect(response.ok(), await response.text()).toBe(true);
 }
 
-let counter = 0;
 /** Creates a workspace through onboarding and waits for its shell. Returns its URL key. */
 export async function createWorkspace(page: Page, label: string): Promise<{ name: string; urlKey: string }> {
-  counter += 1;
   const name = `${workspacePrefix} ${label}`;
-  const urlKey = `e2e-${runId}-${label.toLowerCase()}-${counter}`.slice(0, 32).replace(/-+$/, "");
+  // A random part keeps keys unique across workers and retries, which share the run ID.
+  const unique = Math.random().toString(36).slice(2, 6);
+  const urlKey = `e2e-${runId}-${unique}-${label.toLowerCase()}`.slice(0, 28).replace(/-+$/, "");
   await page.goto("/onboarding");
   await page.getByLabel("Workspace name").fill(name);
   await page.getByLabel("Workspace URL").fill(urlKey);
   await expect(page.getByText("Available")).toBeVisible();
   await page.getByRole("button", { name: "Create workspace" }).click();
-  await page.waitForURL(`**/${urlKey}/my-issues`, { timeout: 30_000 });
+  await page.waitForURL(`**/${urlKey}/my-issues/assigned`, { timeout: 30_000 });
   await expect(page.getByTestId("workspace-menu")).toContainText(name);
+  await shortcutsReady(page);
   return { name, urlKey };
+}
+
+/** Waits until the app listens for keys (it renders on the server before it hydrates). */
+export async function shortcutsReady(page: Page) {
+  await expect(page.locator("html[data-shortcuts=ready]")).toHaveCount(1);
+}
+
+/** Waits for an element's enter animations, so axe doesn't sample mid-fade colors. */
+export async function settled(locator: Locator) {
+  await expect(locator).toBeVisible();
+  await locator.evaluate((el) => Promise.all(el.getAnimations({ subtree: true }).map((a) => a.finished)));
 }
 
 export const test = base.extend<{ requireTestAuth: void }>({
