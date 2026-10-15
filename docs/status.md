@@ -21,6 +21,9 @@ update it in the same PR whenever the PR stack, external setup, or next steps ch
      It caught that the shell had disabled virtualization.
    - CI e2e fixes: the Vercel Toolbar swallowed keypresses on previews, and test auth now handles
      WorkOS organization selection.
+   - Open flake: once in 8 local runs, the team list stayed on "Loading issues" for over 10 s after
+     creating issues (dev server). Not yet diagnosed. If it shows up in CI, check whether the issue or
+     lookup subscriptions resolve.
 2. **Routed issue page** `/<workspace>/issue/<ID>`:
    - Breadcrumbs, prev/next, copy ID/URL/branch (`branchName` in `src/lib/issues`).
    - Property rail (pickers exist), title, and description editor saving with `expectedVersion`.
