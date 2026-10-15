@@ -21,7 +21,8 @@ export default defineConfig({
     baseURL,
     trace: "on-first-retry",
     extraHTTPHeaders: bypass
-      ? { "x-vercel-protection-bypass": bypass, "x-vercel-set-bypass-cookie": "true" }
+      ? // The Vercel Toolbar on previews takes keypresses (like C), so tests skip it.
+        { "x-vercel-protection-bypass": bypass, "x-vercel-set-bypass-cookie": "true", "x-vercel-skip-toolbar": "1" }
       : undefined,
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],

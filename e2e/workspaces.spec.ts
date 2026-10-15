@@ -35,6 +35,10 @@ test.describe("workspaces", () => {
     await page.goto(`/${second.urlKey}/inbox`);
     await expect(page.getByTestId("workspace-menu")).toContainText(second.name);
     await expect(page).toHaveURL(new RegExp(`/${second.urlKey}/inbox$`));
+    // Signing in again with two workspaces (WorkOS asks to pick one) still works.
+    await signIn(page, "switcher");
+    await page.goto(`/${first.urlKey}/inbox`);
+    await expect(page.getByTestId("workspace-menu")).toContainText(first.name);
   });
 
   test("another user can't open a workspace they don't belong to", async ({ browser }) => {

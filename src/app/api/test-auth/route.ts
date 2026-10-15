@@ -61,11 +61,18 @@ async function signIn(email: string, firstName: string, lastName: string, accept
       if (invitation.state === "pending") await workos.userManagement.acceptInvitation(invitation.id);
     }
   }
-  const auth = await workos.userManagement.authenticateWithPassword({
-    clientId: serverEnv.WORKOS_CLIENT_ID,
-    email,
-    password,
-  });
+  const auth = await workos.userManagement
+    .authenticateWithPassword({ clientId: serverEnv.WORKOS_CLIENT_ID, email, password })
+    .catch(async (error: { code?: string; pendingAuthenticationToken?: string; rawData?: { organizations?: { id: string }[] } }) => {
+      // A user in several workspaces must pick one; any works, since the app rescopes from the URL.
+      const organizationId = error.rawData?.organizations?.[0]?.id;
+      if (error.code !== "organization_selection_required" || !error.pendingAuthenticationToken || !organizationId) throw error;
+      return workos.userManagement.authenticateWithOrganizationSelection({
+        clientId: serverEnv.WORKOS_CLIENT_ID,
+        pendingAuthenticationToken: error.pendingAuthenticationToken,
+        organizationId,
+      });
+    });
   await saveSession(auth, request);
   return NextResponse.json({ userId: auth.user.id });
 }
