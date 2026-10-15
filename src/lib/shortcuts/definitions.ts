@@ -27,6 +27,11 @@ export const shortcuts = [
   { id: "assign", keys: "a", description: "Assign", group: "Lists", scope: "global" },
   { id: "set-labels", keys: "l", description: "Change labels", group: "Lists", scope: "global" },
   { id: "toggle-layout", keys: "mod+b", description: "Switch between list and board", group: "Lists", scope: "global" },
+  // Punctuation is written as typed, so ⌘⇧, and ⌘⇧. are "mod+<" and "mod+>" (US layout).
+  { id: "copy-id", keys: "mod+.", description: "Copy issue ID", group: "Issue", scope: "global" },
+  { id: "copy-url", keys: "mod+<", description: "Copy issue URL", group: "Issue", scope: "global" },
+  { id: "copy-branch", keys: "mod+>", description: "Copy git branch name", group: "Issue", scope: "global" },
+  { id: "subscribe", keys: "shift+s", description: "Subscribe or unsubscribe", group: "Issue", scope: "global" },
   { id: "submit", keys: "mod+enter", description: "Submit the form", group: "Forms", scope: "global", allowInInputs: true },
 ] as const satisfies readonly ShortcutDefinition[];
 

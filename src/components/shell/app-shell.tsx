@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { HeaderSlotContext } from "./header-slot";
 import { useWorkspace } from "@/components/workspace/workspace-context";
 import { placeholderSections, teamNav } from "./nav";
 import { Sidebar } from "./sidebar";
@@ -25,6 +26,7 @@ function usePageTitle(): string {
 
 export function AppShell({ children }: { children: ReactNode }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [slot, setSlot] = useState<HTMLElement | null>(null);
   const title = usePageTitle();
 
   return (
@@ -57,9 +59,12 @@ export function AppShell({ children }: { children: ReactNode }) {
           >
             <Menu aria-hidden />
           </Button>
-          <h1 className="font-medium">{title}</h1>
+          {title && <h1 className="font-medium">{title}</h1>}
+          <div ref={setSlot} className="flex min-w-0 flex-1 items-center gap-2 empty:hidden" />
         </header>
-        <main className="flex min-h-0 flex-1 flex-col overflow-y-auto">{children}</main>
+        <HeaderSlotContext.Provider value={slot}>
+          <main className="flex min-h-0 flex-1 flex-col overflow-y-auto">{children}</main>
+        </HeaderSlotContext.Provider>
       </div>
     </div>
   );

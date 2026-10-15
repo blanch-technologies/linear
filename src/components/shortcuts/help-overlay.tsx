@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { shortcuts } from "@/lib/shortcuts";
 import { ShortcutKeys } from "./shortcut-keys";
 
-const groups = ["General", "Navigation", "Lists", "Forms"] as const;
+const groups = ["General", "Navigation", "Lists", "Issue", "Forms"] as const;
 
 /** The keyboard shortcut reference, generated from the registry. */
 export function HelpOverlay({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {

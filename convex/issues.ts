@@ -180,6 +180,32 @@ export const activity = workspaceQuery({
   },
 });
 
+/**
+ * The issue picker (parent, relations, #mentions): an exact identifier first,
+ * then title matches, readable issues only. The Search page has its own query.
+ */
+export const quickSearch = workspaceQuery({
+  args: { query: v.string(), excludeId: v.optional(v.id("issues")) },
+  handler: async ({ db, viewer }, { query, excludeId }) => {
+    const text = query.trim().slice(0, 100);
+    if (!text) return [];
+    const found: Doc<"issues">[] = [];
+    if (/^[a-z][a-z0-9]*-\d+$/i.test(text)) {
+      const exact = await issueByIdentifier(db, viewer.workspace._id, text);
+      if (exact) found.push(exact);
+    }
+    const matches = await db
+      .query("issues")
+      .withSearchIndex("search_title", (q) => q.search("title", text).eq("workspaceId", viewer.workspace._id).eq("deletedAt", undefined))
+      .take(30);
+    const seen = new Set<string>();
+    return [...found, ...matches]
+      .filter((issue) => issue._id !== excludeId && readable(viewer, issue) && !seen.has(issue._id) && seen.add(issue._id))
+      .slice(0, 10)
+      .map((issue) => ({ ...brief(issue), teamId: issue.teamId }));
+  },
+});
+
 /** A team's issues, newest first, a page at a time (D-32). */
 export const listForTeam = workspaceQuery({
   args: { teamId: v.id("teams"), paginationOpts: paginationOptsValidator },

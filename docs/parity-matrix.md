@@ -11,16 +11,16 @@ Every row needs, when picked up: acceptance criteria, owner agent, and keyboard 
 | Feature | Tier | Notes / acceptance | Status |
 |---|---|---|---|
 | Create issue (composer, `C`, inline property pills, create-more) | P0 | Composer with rich description, status/priority/assignee/labels/estimate/due pills, create more, drafts (Phase 2); project/cycle with Phase 3 | in progress |
-| Routed issue page with stable URL, breadcrumbs, prev/next, copy ID/URL/branch | P0 | Sidebar stays visible | todo |
+| Routed issue page with stable URL, breadcrumbs, prev/next, copy ID/URL/branch | P0 | `/<workspace>/issue/<ID>` with the sidebar visible; aliases redirect; breadcrumbs (team › parent › ID); prev/next follows the list it came from (J/K); ⌘. ⌘⇧, ⌘⇧. copy ID, URL, and branch; Esc goes back; `e2e/issue-page.spec.ts` (PR #13) | done |
 | Properties: status, priority, assignee, labels, estimate, due date, project, cycle, milestone | P0 | Each editable from list, board, page, and keyboard | todo |
-| Sub-issues and parent | P0 | Hierarchy cycle prevention (backend done) | in progress |
-| Relations: blocks, blocked by, related, duplicate | P0 | Backend done; UI with the issue page | in progress |
+| Sub-issues and parent | P0 | Hierarchy cycle prevention; sub-issue list with done count, add sub-issue via the composer, parent picker in the rail (PR #13) | done |
+| Relations: blocks, blocked by, related, duplicate | P0 | Relations section: add (type, then issue search via `issues.quickSearch`), remove, shown from both sides (PR #13) | done |
 | Rich-text description (headings, lists, code, links, images, mentions, slash menu) | P0 | TipTap editor with markdown shortcuts, task lists, safe links, @mentions (ADR 0006); images, #issues, slash menu with the issue page | in progress |
 | Comments: threads, edit, delete, reactions, resolve, mentions | P0 | | todo |
 | Attachments and file upload | P0 | 10 MB+ limit, authorized downloads | todo |
-| Issue history / activity timeline | P0 | Append-only `issueHistory`, resolved for display (backend done) | in progress |
-| Subscriptions and notifications on changes | P0 | ADR 0007; generated in the write path (backend done) | in progress |
-| Soft delete, Recently deleted, restore, archive | P0 | 30-day purge cron (backend done) | in progress |
+| Issue history / activity timeline | P0 | Append-only `issueHistory`; activity timeline on the issue page with wording in `src/lib/issues/activity.ts` (PR #13); comments interleave later | in progress |
+| Subscriptions and notifications on changes | P0 | ADR 0007; generated in the write path; subscribe toggle and Shift+S on the issue page (PR #13); inbox UI next | in progress |
+| Soft delete, Recently deleted, restore, archive | P0 | 30-day purge cron; delete with undo and restore on the issue page (PR #13); Recently deleted page and archive later | in progress |
 | Bulk select and actions | P1 | | todo |
 | Issue templates | P1 | | todo |
 | Estimates (points / t-shirt / exponential) | P1 | Team setting | todo |
