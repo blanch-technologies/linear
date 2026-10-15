@@ -52,9 +52,11 @@ test.describe("issue list and board", () => {
     await page.mouse.up();
     await expect(inProgress.getByTestId("board-card")).toHaveCount(1);
     await expect(inProgress).toContainText("First issue");
-    // The layout persists, and the column comes from the server after a reload.
-    await page.reload();
-    await expect(inProgress).toContainText("First issue");
+    // A second tab reads the move from the server (a reload could abort the in-flight mutation).
+    const other = await page.context().newPage();
+    await other.goto(page.url());
+    await expect(shown(other, "board-column").and(other.locator('[aria-label^="In Progress,"]'))).toContainText("First issue");
+    await other.close();
 
     // My issues > Created shows both.
     await page.goto(`/${urlKey}/my-issues/created`);
