@@ -37,7 +37,8 @@ test.describe("issue list and board", () => {
     await page.getByRole("button", { name: "Remove Priority filter" }).click();
     await expect(shown(page, "issue-count")).toHaveText("2 issues");
 
-    // ⌘B switches to the board.
+    // ⌘B switches to the board. Shortcuts stand down while a menu is still closing.
+    await expect(page.locator("[data-radix-popper-content-wrapper]")).toHaveCount(0);
     await page.keyboard.press("ControlOrMeta+b");
     await expect(shown(page, "issue-board")).toBeVisible();
     await expect(shown(page, "board-card")).toHaveCount(2);
