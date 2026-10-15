@@ -1,13 +1,7 @@
-"use client";
-
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useWorkspace } from "@/components/workspace/workspace-context";
+import { redirect } from "next/navigation";
 
 /** The workspace home is My issues, as in Linear's default. */
-export default function WorkspaceHome() {
-  const { href } = useWorkspace();
-  const router = useRouter();
-  useEffect(() => router.replace(href("my-issues")), [href, router]);
-  return null;
+export default async function WorkspaceHome({ params }: { params: Promise<{ workspace: string }> }) {
+  const { workspace } = await params;
+  redirect(`/${workspace}/my-issues/assigned`);
 }

@@ -1,12 +1,7 @@
-"use client";
+import { redirect } from "next/navigation";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useWorkspace } from "@/components/workspace/workspace-context";
-
-export default function MyIssuesIndex() {
-  const { href } = useWorkspace();
-  const router = useRouter();
-  useEffect(() => router.replace(href("my-issues", "assigned")), [href, router]);
-  return null;
+/** My issues opens on the Assigned tab. Redirects on the server so there's no second client hop. */
+export default async function MyIssuesIndex({ params }: { params: Promise<{ workspace: string }> }) {
+  const { workspace } = await params;
+  redirect(`/${workspace}/my-issues/assigned`);
 }
