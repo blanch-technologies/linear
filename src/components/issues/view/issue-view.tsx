@@ -12,6 +12,7 @@ import { useWorkspace } from "@/components/workspace/workspace-context";
 import { emptyFilter, parseFilter, serializeFilter, type Filter } from "@/lib/filters";
 import { defaultDisplay, parseDisplay, type Display } from "@/lib/filters/views";
 import { selectRange, toggleOne } from "@/lib/issues/selection";
+import { rememberIssueNav } from "../issue-nav";
 import { useUpdateIssue } from "../use-update-issue";
 import type { IssueRow } from "../use-issue-data";
 import { IssueBoard, type BoardMove } from "./issue-board";
@@ -104,7 +105,18 @@ export function IssueView({
   const order = useMemo(() => groups.filter((g) => !collapsed.has(g.key)).flatMap((g) => g.issues), [groups, collapsed]);
   const byId = useMemo(() => new Map(rows.map((r) => [r.id as string, r])), [rows]);
   const hrefFor = useCallback((issue: IssueRow) => href("issue", issue.identifier), [href]);
-  const open = useCallback((issue: IssueRow) => router.push(hrefFor(issue)), [router, hrefFor]);
+  // Prev/next on the issue page follows this list's visible order.
+  const rememberOrder = useCallback(() => {
+    const query = params.toString();
+    rememberIssueNav({ identifiers: order.map((i) => i.identifier), from: query ? `${pathname}?${query}` : pathname });
+  }, [order, pathname, params]);
+  const open = useCallback(
+    (issue: IssueRow) => {
+      rememberOrder();
+      router.push(hrefFor(issue));
+    },
+    [router, hrefFor, rememberOrder],
+  );
 
   /** Applies a change to the selection when the target is part of it, else to the one issue. */
   const applyPatch = useCallback(
@@ -218,7 +230,12 @@ export function IssueView({
 
   const ready = !loading && lookups.ready;
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
+    <div
+      className="flex min-h-0 flex-1 flex-col"
+      onClickCapture={(event) => {
+        if ((event.target as HTMLElement).closest('a[href*="/issue/"]')) rememberOrder();
+      }}
+    >
       {header}
       <ViewToolbar
         filter={filter}

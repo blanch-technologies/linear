@@ -8,7 +8,8 @@ update it in the same PR whenever the PR stack, external setup, or next steps ch
 - **Phase 0** (walking skeleton) and **Phase 1** (spine) are built. The owner asked to continue, so
   Phase 2 (core issues, the dogfood gate) is in progress.
 - **PRs #1–#11 are merged into `main`** (2026-10-14), and merged branches are deleted automatically.
-  - #12 (`agent/issues/lists`, list and board views) is an open draft against `main`.
+  - #12 (`agent/issues/lists`, list and board views) is ready for review against `main`.
+  - #13 (`agent/issues/issue-page`, the issue page) is stacked on #12.
   - Branch new work from `main`, unless it builds on #12; then branch from `agent/issues/lists`.
   - Check with `gh pr list --state all`.
 
@@ -24,12 +25,11 @@ update it in the same PR whenever the PR stack, external setup, or next steps ch
    - Open flake: once in 8 local runs, the team list stayed on "Loading issues" for over 10 s after
      creating issues (dev server). Not yet diagnosed. If it shows up in CI, check whether the issue or
      lookup subscriptions resolve.
-2. **Routed issue page** `/<workspace>/issue/<ID>`:
-   - Breadcrumbs, prev/next, copy ID/URL/branch (`branchName` in `src/lib/issues`).
-   - Property rail (pickers exist), title, and description editor saving with `expectedVersion`.
-   - Activity (`issues.activity`), sub-issues, relations, subscribe toggle, delete and restore.
-   - Editor: `#issue` mentions (an `issueMention` node, see ADR 0006), a slash menu, and image upload
-     to Convex storage.
+2. **Routed issue page** `/<workspace>/issue/<ID>`: built in #13 (`agent/issues/issue-page`, stacked on
+   #12). Still open:
+   - Editor extras: `#issue` mentions (an `issueMention` node, ADR 0006; `issues.quickSearch` can
+     feed it), a slash menu, and image upload to Convex storage.
+   - Comments in the activity timeline (next item).
 3. **Comments:** threads, edit, delete, reactions, resolve, mentions, attachments. The tables exist;
    notifications follow ADR 0007.
 4. **Inbox:** read, unread, snooze, archive, keyboard triage; generated from `notifications`.

@@ -70,8 +70,11 @@ export function patchIssueEverywhere(store: OptimisticLocalStore, issueId: Id<"i
   }
 }
 
-/** Updates an issue optimistically; resolves false (after a toast) when the server refuses. */
-export function useUpdateIssue() {
+/**
+ * Updates an issue optimistically; resolves false when the server refuses. The
+ * refusal shows as a toast unless `onError` returns true (handled).
+ */
+export function useUpdateIssue({ onError }: { onError?: (error: unknown) => boolean } = {}) {
   const mutate = useMutation(api.issues.update).withOptimisticUpdate((store, args) => {
     const { issueId, ...rest } = args;
     delete rest.expectedVersion;
@@ -83,10 +86,10 @@ export function useUpdateIssue() {
         await mutate({ issueId: issue.id, expectedVersion: issue.version, ...patch });
         return true;
       } catch (error) {
-        toast.error(errorMessage(error));
+        if (!onError?.(error)) toast.error(errorMessage(error));
         return false;
       }
     },
-    [mutate],
+    [mutate, onError],
   );
 }

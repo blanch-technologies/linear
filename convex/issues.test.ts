@@ -199,3 +199,21 @@ describe("move, delete, restore, purge (D-24, D-26)", () => {
     expect(issueB?.deleted === false && issueB.relations.map((r) => [r.type, r.direction, r.issue.identifier])).toEqual([["blocks", "outgoing", "ENG-1"]]);
   });
 });
+
+describe("quickSearch (issue picker)", () => {
+  it("finds by exact identifier and by title, skipping unreadable, deleted, and excluded issues", async () => {
+    const a = await ws.as(ada).mutation(api.issues.create, { teamId: eng, title: "Sidebar collapses on reload" });
+    const b = await ws.as(ada).mutation(api.issues.create, { teamId: eng, title: "Sidebar width" });
+    await ws.as(ada).mutation(api.issues.create, { teamId: sec, title: "Sidebar secret" });
+    const gone = await ws.as(ada).mutation(api.issues.create, { teamId: eng, title: "Sidebar removed" });
+    await ws.as(ada).mutation(api.issues.remove, { issueId: gone.issueId });
+
+    const titles = async (query: string, excludeId?: Id<"issues">) =>
+      (await ws.as(bo).query(api.issues.quickSearch, { query, excludeId })).map((i) => i.title).sort();
+    expect(await titles("sidebar")).toEqual(["Sidebar collapses on reload", "Sidebar width"]);
+    expect(await titles("sidebar", a.issueId)).toEqual(["Sidebar width"]);
+    expect((await ws.as(bo).query(api.issues.quickSearch, { query: "eng-2" }))[0]).toMatchObject({ id: b.issueId, identifier: "ENG-2" });
+    expect(await titles("  ")).toEqual([]);
+    expect(await ws.as(bo).query(api.issues.quickSearch, { query: "SEC-1" })).toEqual([]);
+  });
+});
